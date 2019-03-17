@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="tO8-8H-jpQ" customClass="CustomCell" customModule="EasyListExample" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tO8-8H-jpQ" id="gCB-To-xea">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y3d-SQ-AoW">
+                        <rect key="frame" x="16" y="11" width="310" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🐶" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w1K-CH-H41">
+                        <rect key="frame" x="336" y="11" width="23" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="23" id="9p0-XS-fWD"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="y3d-SQ-AoW" firstAttribute="top" secondItem="gCB-To-xea" secondAttribute="topMargin" id="5R6-ON-Bwp"/>
+                    <constraint firstItem="w1K-CH-H41" firstAttribute="bottom" secondItem="gCB-To-xea" secondAttribute="bottomMargin" id="Gdl-zA-HwM"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="y3d-SQ-AoW" secondAttribute="bottom" constant="1" id="TYT-NH-AbQ"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="w1K-CH-H41" secondAttribute="trailing" id="XJo-cB-HRE"/>
+                    <constraint firstItem="w1K-CH-H41" firstAttribute="top" secondItem="gCB-To-xea" secondAttribute="topMargin" id="oiv-t7-VG8"/>
+                    <constraint firstItem="w1K-CH-H41" firstAttribute="leading" secondItem="y3d-SQ-AoW" secondAttribute="trailing" constant="10" id="sAA-JZ-BpJ"/>
+                    <constraint firstItem="y3d-SQ-AoW" firstAttribute="leading" secondItem="gCB-To-xea" secondAttribute="leadingMargin" id="uc2-7R-N18"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="label" destination="y3d-SQ-AoW" id="qEL-Ae-rr9"/>
+            </connections>
+            <point key="canvasLocation" x="10" y="-108"/>
+        </tableViewCell>
+    </objects>
+</document>
