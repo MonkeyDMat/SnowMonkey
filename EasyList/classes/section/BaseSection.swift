@@ -11,7 +11,10 @@ import UIKit
 // Section implements RowLayout, RowEdition, RowSelection so it can provides default values for the rows it contains
 // Which allows for example to define the height of all rows in that section, without having to specify height for each rows individually
 
-public class BaseSection: NSObject {
+public class BaseSection: NSObject, RowLayoutProvider, RowEditionProvider, RowSelectionProvider {
+    
+    
+    typealias ReturnType = BaseSection
     
     public weak var source: Source?
     var rows: [RowType] = []
@@ -20,6 +23,19 @@ public class BaseSection: NSObject {
     public func addRow(_ row: RowType) -> BaseSection {
         row.setSection?(section: self)
         rows.append(row)
+        return self
+    }
+    
+    @discardableResult
+    public func addRow(_ row: RowType, at index: Int) -> BaseSection {
+        row.setSection?(section: self)
+        rows.insert(row, at: index)
+        return self
+    }
+    
+    @discardableResult
+    public func deleteRow(at index: Int) -> BaseSection {
+        rows.remove(at: index)
         return self
     }
     
@@ -41,59 +57,19 @@ public class BaseSection: NSObject {
     }
     
     
-    //MARK: - RowLayout
+    //MARK: - RowLayoutProvider
     var _height: (() -> CGFloat)?
-    @discardableResult
-    public func setRowHeight(_ height: (() -> CGFloat)?) -> BaseSection {
-        _height = height
-        return self
-    }
-    
     var _estimatedHeight: (() -> CGFloat)?
-    @discardableResult
-    public func setEstimatedRowHeight(_ estimatedHeight: (() -> CGFloat)?) -> BaseSection {
-        _estimatedHeight = estimatedHeight
-        return self
-    }
+    var _selectionStyle: (() -> UITableViewCell.SelectionStyle)?
     
-    //MARK: - RowEdition
+    //MARK: - RowEditionProvider
     var _editable: (() -> Bool)?
     var _editingStyle: (() -> UITableViewCell.EditingStyle)?
     var _titleForDeleteConfirmation: (() -> String?)?
-    @discardableResult
-    public func setRowEditable(editable: (() -> Bool)?, editingStyle: (() -> UITableViewCell.EditingStyle)? = {return .delete}, titleForDeleteConfirmation: (() -> String?)? = nil) -> BaseSection {
-        _editable = editable
-        _editingStyle = editingStyle
-        _titleForDeleteConfirmation = titleForDeleteConfirmation
-        return self
-    }
     
-    //MARK: - RowSelection
-    var _willSelect: ((_ index: IndexPath) -> IndexPath)?
-    @discardableResult
-    public func setWillSelect(_ willSelect: ((_ index: IndexPath) -> IndexPath)?) -> BaseSection {
-        _willSelect = willSelect
-        return self
-    }
-    
+    //MARK: - RowSelectionProvider
+    var _willSelect: ((IndexPath) -> IndexPath?)?
     var _didSelect: ((_ index: IndexPath) -> Void)?
-    @discardableResult
-    public func setDidSelect(_ didSelect: ((_ index: IndexPath) -> Void)?) -> BaseSection {
-        _didSelect = didSelect
-        return self
-    }
-    
-    var _willDeselect: ((_ index: IndexPath) -> IndexPath)?
-    @discardableResult
-    public func setWillDeselect(_ willDeselect: ((_ index: IndexPath) -> IndexPath)?) -> BaseSection {
-        _willDeselect = willDeselect
-        return self
-    }
-    
+    var _willDeselect: ((IndexPath) -> IndexPath?)?
     var _didDeselect: ((_ index: IndexPath) -> Void)?
-    @discardableResult
-    public func setDidDeselect(_ didDeselect: ((_ index: IndexPath) -> Void)?) -> BaseSection {
-        _didDeselect = didDeselect
-        return self
-    }
 }

@@ -8,8 +8,8 @@
 
 import Foundation
 
-/*class StoreNameCellPresenter: BaseCellPresenter<SingleLineCell, Store> {
-    override func configureCell(cell: SingleLineCell, source: Store) {
+class StoreNameCellPresenter: BaseCellPresenter<StoreCell, Store> {
+    override func configureCell(cell: Cell, source: Store) {
         cell.label?.text = "\(source.vocation) \(source.name)"
     }
-}*/
+}

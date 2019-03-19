@@ -21,6 +21,9 @@ class ViewController: UIViewController {
         }
         
         let source = Source(tableView: tableView)
+        source.setRowSelectionStyle { () -> UITableViewCell.SelectionStyle in
+            return .none
+        }
         
         let section = Section(header: NativeHeader(title: "Examples"), footer: nil)
         source.addSection(section)
@@ -41,73 +44,41 @@ class ViewController: UIViewController {
         section.addRow(custom)
         
         
-        
-        
-        /*let source = Source(tableView: tableView)
-        source.setRowHeight { () -> CGFloat in
-            return 120
+        // CustomData
+        let customData = NativeRow(text: "Custom data")
+        customData.setDidSelect { (_) in
+            self.show(sample: .customData)
         }
+        section.addRow(customData)
         
-        let store = Store(vocation: "Express", name: "Paris", isOpened: true)
         
-        source.setDidSelect { (index) in
-            print("SOURCE DID SELECT \(index.row)")
-        }*/
-        
-        // Section 1
-        /*let header1 = CustomHeader()
-        header1.action = { (header) in
-            if let tableView = header.section?.source?.tableView {
-                tableView.setEditing(!tableView.isEditing, animated: true)
-                header.actionButton.setTitle(tableView.isEditing ? "Terminer" : "Editer", for: .normal)
-            }
+        // Configuration
+        let configuration = NativeRow(text: "Configuration")
+        configuration.setDidSelect { (_) in
+            self.show(sample: .configuration)
         }
+        section.addRow(configuration)
         
-        let footer1 = CustomFooter()
-        footer1.setup(text: "Footer\nFooter\nFooter")
         
-        let section1 = Section(header: header1, footer: footer1)
-        section1.setRowHeight { () -> CGFloat in
-            return 80
+        // Editable
+        let editable = NativeRow(text: "Editable")
+        editable.setDidSelect { (_) in
+            self.show(sample: .editable)
         }
+        section.addRow(editable)
         
-        section1.setRowEditable(editable: { () -> Bool in
-                return true
-            }, editingStyle: { () -> UITableViewCell.EditingStyle in
-                return .delete
-            }) { () -> String? in
-                    return "Supprimer"
-            }
         
-        section1.setDidSelect { (index) in
-            print("SECTION DID SELECT \(index.row)")
+        // Animated
+        let animated = NativeRow(text: "Animated")
+        animated.setDidSelect { (_) in
+            self.show(sample: .animated)
         }
-        
-        // Rows
-        // Name
-        section1.addRow(Row(data: store,
-                           cellIdentifier: "SingleLineCell",
-                           cellPresenter: StoreNameCellPresenter()).setHeight({ () -> CGFloat in
-                            return 60
-                           }).setDidSelect({ (index) in
-                            print("ROW DID SELECT : \(index.row)")
-                           }))
-        
-        // Opened
-        section1.addRow(Row(data: store,
-                           cellIdentifier: "SingleLineCell",
-                           cellPresenter: StoreOpenedCellPresenter()))
-        
-        // Opened Bis EN
-        section1.addRow(Row<Store, SingleLineCell>(data: store,
-                                                  cellIdentifier: "SingleLineCell",
-                                                  configureCell: { (cell, store) in
-                                                    cell.label?.text = store.isOpened ? "Open" : "Closed"
-        }))
-        
-        source.addSection(section1)
+        section.addRow(animated)
         
         
+        
+        
+        /*
         // Section 2
         let header2 = CustomHeader()
         header2.action = { (header) in
@@ -116,7 +87,7 @@ class ViewController: UIViewController {
                           cellPresenter: StoreNameCellPresenter()).setHeight({ () -> CGFloat in
                             return 40
                           })
-            source.insertRow(row, at: IndexPath(row: 1, section: 1), animation: .fade)
+            source.addRow(row, at: IndexPath(row: 1, section: 1), animation: .fade)
         }
         let footer2 = CustomFooter()
         footer2.setup(text: "FOOTER 2")
@@ -192,8 +163,18 @@ class ViewController: UIViewController {
         case .custom:
             let storyBoard = UIStoryboard(name: "Custom", bundle: nil)
             vc = storyBoard.instantiateViewController(withIdentifier: "CustomViewController")
-        default:
-            ()
+        case .customData:
+            let storyBoard = UIStoryboard(name: "CustomData", bundle: nil)
+            vc = storyBoard.instantiateViewController(withIdentifier: "CustomDataViewController")
+        case .configuration:
+            let storyBoard = UIStoryboard(name: "Configuration", bundle: nil)
+            vc = storyBoard.instantiateViewController(withIdentifier: "ConfigurationViewController")
+        case .editable:
+            let storyBoard = UIStoryboard(name: "Editable", bundle: nil)
+            vc = storyBoard.instantiateViewController(withIdentifier: "EditableViewController")
+        case .animated:
+            let storyBoard = UIStoryboard(name: "Animated", bundle: nil)
+            vc = storyBoard.instantiateViewController(withIdentifier: "AnimatedViewController")
         }
         
         guard let viewController = vc else {

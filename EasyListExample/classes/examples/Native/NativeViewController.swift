@@ -20,33 +20,20 @@ class NativeViewController: UIViewController {
         }
         
         let source = Source(tableView: tableView)
+        source.setRowSelectionStyle { () -> UITableViewCell.SelectionStyle in
+            return .none
+        }
         
-        source.addSection(Section<NativeHeader, NativeFooter>(header: NativeHeader(title: "Native Header"),
-                                                              footer: NativeFooter(title: "Native Footer")))
+        let section = Section<NativeHeader, NativeFooter>(header: NativeHeader(title: "Native Header"),
+                                                          footer: NativeFooter(title: "Native Footer"))
+        
+        source.addSection(section)
             .addRow(NativeRow(text: "Style subtitle", detail: "subtitle", style: .subtitle))
             .addRow(NativeRow(text: "Style value 1", detail: "value 1", style: .value1))
             .addRow(NativeRow(text: "Style value 2", detail: "value 2", style: .value2))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
-            .addRow(NativeRow(text: "No style"))
+            
+        for i in 1...30 {
+            section.addRow(NativeRow(text: "Native Row " + NSNumber(value: i).stringValue))
+        }
     }
 }

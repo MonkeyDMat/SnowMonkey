@@ -17,7 +17,7 @@ public struct TextData {
 public class NativeRow: Row<TextData, NativeCell> {
     
     public init(text: String, detail: String? = nil, style: UITableViewCell.CellStyle = .default) {
-        super.init(data: TextData(text: text, detail: detail, style: style), cellIdentifier: Config.RowIdentifiers.TextRow) { (cell, data) in
+        super.init(data: TextData(text: text, detail: detail, style: style), cellIdentifier: nil) { (cell, data) in
             cell.textLabel?.text = data.text
             cell.detailTextLabel?.text = data.detail
         }
@@ -25,23 +25,14 @@ public class NativeRow: Row<TextData, NativeCell> {
     
     //MARK: - RowType
     public override func getCell(tableView: UITableView) -> UITableViewCell {
-        if let cellIdentifier = cellIdentifier,
-            let data = data,
-            let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? NativeCell {
+        if let data = data {
+            let cell = NativeCell(style: data.style, reuseIdentifier: cellIdentifier)
             
             cellPresenter?.configureCell(cell: cell, source: data)
             
             return cell
         } else {
-            if let data = data {
-                let cell = NativeCell(style: data.style, reuseIdentifier: cellIdentifier)
-                
-                cellPresenter?.configureCell(cell: cell, source: data)
-                
-                return cell
-            } else {
-                return UITableViewCell()
-            }
+            return UITableViewCell()
         }
     }
 }

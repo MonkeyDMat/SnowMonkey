@@ -8,8 +8,8 @@
 
 import Foundation
 
-/*class StoreOpenedCellPresenter: BaseCellPresenter<SingleLineCell, Store> {
-    override func configureCell(cell: SingleLineCell, source: Store) {
+class StoreOpenedCellPresenter: BaseCellPresenter<StoreCell, Store> {
+    override func configureCell(cell: Cell, source: Store) {
         cell.label?.text = source.isOpened ? "Ouvert" : "Fermé"
     }
-}*/
+}

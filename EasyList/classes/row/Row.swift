@@ -8,30 +8,14 @@
 
 import UIKit
 
-@objc public protocol RowLayout {
-    @objc optional func rowHeight() -> CGFloat
-    @objc optional func estimatedRowHeight() -> CGFloat
-}
-
-@objc public protocol RowEdition {
-    @objc optional func isEditable() -> Bool
-    @objc optional func getEditingStyle() -> UITableViewCell.EditingStyle
-    @objc optional func getTitleForDeleteConfirmation() -> String?
-}
-
-@objc public protocol RowSelection {
-    @objc optional func willSelect(index: IndexPath) -> IndexPath?
-    @objc optional func didSelect(index: IndexPath)
-    @objc optional func willDeselect(index: IndexPath) -> IndexPath?
-    @objc optional func didDeselect(index: IndexPath)
-}
-
 @objc public protocol RowType: RowLayout, RowEdition, RowSelection {
     func getCell(tableView: UITableView) -> UITableViewCell
     @objc optional func setSection(section: BaseSection)
 }
 
-public class Row<SourceType, CellType: Cell<SourceType>>: RowType {
+public class Row<SourceType, CellType: Cell<SourceType>>: RowType, RowLayoutProvider, RowEditionProvider, RowSelectionProvider {
+    
+    typealias ReturnType = Row<SourceType, CellType>
     
     var data: SourceType?
     var cellIdentifier: String?
@@ -54,37 +38,34 @@ public class Row<SourceType, CellType: Cell<SourceType>>: RowType {
     
     //MARK: - RowType
     public func getCell(tableView: UITableView) -> UITableViewCell {
-        if let cellIdentifier = cellIdentifier,
-            let data = data,
-            let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CellType {
-            
-            cellPresenter?.configureCell(cell: cell, source: data)
-            
-            return cell
+        var cell: CellType?
+        
+        if let cellIdentifier = cellIdentifier {
+            tableView.register(CellType.self, forCellReuseIdentifier: cellIdentifier)
+            cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CellType
         } else {
-            if let data = data {
-                let cell = CellType()
-                
-                cellPresenter?.configureCell(cell: cell, source: data)
-                
-                return cell
-            } else {
-                return UITableViewCell()
-            }
+            cell = CellType(frame: CGRect.zero)
         }
+        
+        cell?.layoutSubviews()
+        
+        if let data = data, cell != nil {
+            cellPresenter?.configureCell(cell: cell!, source: data)
+        }
+        
+        return cell ?? UITableViewCell()
     }
     
     public func setSection(section: BaseSection) {
         self.section = section
     }
     
-    //MARK: - RowLayout
+    //MARK: - RowLayoutProvider
     var _height: (() -> CGFloat)?
-    @discardableResult
-    public func setHeight(_ height: (() -> CGFloat)?) -> Row<SourceType, CellType> {
-        _height = height
-        return self
-    }
+    var _estimatedHeight: (() -> CGFloat)?
+    var _selectionStyle: (() -> UITableViewCell.SelectionStyle)?
+    
+    //MARK: - RowLayout
     public func rowHeight() -> CGFloat {
         return _height?() ??
             section?._height?() ??
@@ -92,12 +73,6 @@ public class Row<SourceType, CellType: Cell<SourceType>>: RowType {
             CGFloat(40)
     }
     
-    var _estimatedHeight: (() -> CGFloat)?
-    @discardableResult
-    public func setEstimatedHeight(_ estimatedHeight: (() -> CGFloat)?) -> Row<SourceType, CellType> {
-        _estimatedHeight = estimatedHeight
-        return self
-    }
     public func estimatedRowHeight() -> CGFloat {
         return _estimatedHeight?() ??
             section?._estimatedHeight?() ??
@@ -105,17 +80,19 @@ public class Row<SourceType, CellType: Cell<SourceType>>: RowType {
             CGFloat(40)
     }
     
-    //MARK: - RowEdition
+    public func selectionStyle() -> UITableViewCell.SelectionStyle {
+        return _selectionStyle?() ??
+            section?._selectionStyle?() ??
+            section?.source?._selectionStyle?() ??
+            UITableViewCell.SelectionStyle.default
+    }
+    
+    //MARK: - RowEditionProvider
     var _editable: (() -> Bool)?
     var _editingStyle: (() -> UITableViewCell.EditingStyle)?
     var _titleForDeleteConfirmation: (() -> String?)?
-    @discardableResult
-    public func setEditable(editable: (() -> Bool)?, editingStyle: (() -> UITableViewCell.EditingStyle)? = {return .delete}, titleForDeleteConfirmation: (() -> String?)? = nil) -> Row<SourceType, CellType> {
-        _editable = editable
-        _editingStyle = editingStyle
-        _titleForDeleteConfirmation = titleForDeleteConfirmation
-        return self
-    }
+    
+    //MARK: - RowEdition
     public func isEditable() -> Bool {
         return _editable?() ??
             section?._editable?() ??
@@ -134,13 +111,13 @@ public class Row<SourceType, CellType: Cell<SourceType>>: RowType {
             section?.source?._titleForDeleteConfirmation?()
     }
     
-    //MARK: - RowSelection
+    //MARK: - RowSelectionProvider
     var _willSelect: ((_ index: IndexPath) -> IndexPath?)?
-    @discardableResult
-    public func setWillSelect(_ willSelect: ((_ index: IndexPath) -> IndexPath?)?) -> Row<SourceType, CellType> {
-        _willSelect = willSelect
-        return self
-    }
+    var _didSelect: ((_ index: IndexPath) -> Void)?
+    var _willDeselect: ((_ index: IndexPath) -> IndexPath?)?
+    var _didDeselect: ((_ index: IndexPath) -> Void)?
+    
+    //MARK: - RowSelection
     public func willSelect(index: IndexPath) -> IndexPath? {
         return _willSelect?(index) ??
             section?._willSelect?(index) ??
@@ -148,24 +125,12 @@ public class Row<SourceType, CellType: Cell<SourceType>>: RowType {
             index
     }
     
-    var _didSelect: ((_ index: IndexPath) -> Void)?
-    @discardableResult
-    public func setDidSelect(_ didSelect: ((_ index: IndexPath) -> Void)?) -> Row<SourceType, CellType> {
-        _didSelect = didSelect
-        return self
-    }
     public func didSelect(index: IndexPath) {
         _didSelect?(index) ??
             section?._didSelect?(index) ??
             section?.source?._didSelect?(index)
     }
     
-    var _willDeselect: ((_ index: IndexPath) -> IndexPath?)?
-    @discardableResult
-    public func setWillDeselect(_ willDeselect: ((_ index: IndexPath) -> IndexPath?)?) -> Row<SourceType, CellType> {
-        _willDeselect = willDeselect
-        return self
-    }
     public func willDeselect(index: IndexPath) -> IndexPath? {
         return _willDeselect?(index) ??
             section?._willDeselect?(index) ??
@@ -173,12 +138,6 @@ public class Row<SourceType, CellType: Cell<SourceType>>: RowType {
             index
     }
     
-    var _didDeselect: ((_ index: IndexPath) -> Void)?
-    @discardableResult
-    public func setDidDeselect(_ didDeselect: ((_ index: IndexPath) -> Void)?) -> Row<SourceType, CellType> {
-        _didDeselect = didDeselect
-        return self
-    }
     public func didDeselect(index: IndexPath) {
         _didDeselect?(index) ??
             section?._didDeselect?(index) ??

@@ -20,6 +20,9 @@ class CustomViewController: UIViewController {
         }
         
         let source = Source(tableView: tableView)
+        source.setRowSelectionStyle { () -> UITableViewCell.SelectionStyle in
+            return .none
+        }
         
         let header = CustomHeader()
         header.setup(text: "Custom Header\nThis is a custom header")
@@ -30,6 +33,8 @@ class CustomViewController: UIViewController {
         let section = Section(header: header, footer: footer)
         source.addSection(section)
         
-        section.addRow(CustomRow(text: "Custom Row"))
+        for i in 1...30 {
+            section.addRow(CustomRow(text: "Custom Row " + NSNumber(value: i).stringValue))
+        }
     }
 }

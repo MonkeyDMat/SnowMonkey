@@ -12,6 +12,27 @@
 		15389595223E5E910034AB6A /* NativeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15389591223E5D7A0034AB6A /* NativeRow.swift */; };
 		15389596223E5E940034AB6A /* NativeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15389593223E5D860034AB6A /* NativeCell.swift */; };
 		15389598223E65290034AB6A /* Native.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15389597223E65290034AB6A /* Native.storyboard */; };
+		153AC95A2241983D00CA3E1E /* IndexedRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AC9592241983D00CA3E1E /* IndexedRow.swift */; };
+		153AC95C224198B500CA3E1E /* IndexedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AC95B224198B500CA3E1E /* IndexedCell.swift */; };
+		153C04ED224102C9004B5FC4 /* StoreRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C04EC224102C9004B5FC4 /* StoreRow.swift */; };
+		153C04EF224102D4004B5FC4 /* StoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C04EE224102D4004B5FC4 /* StoreCell.swift */; };
+		153C04F1224102DF004B5FC4 /* StoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 153C04F0224102DF004B5FC4 /* StoreCell.xib */; };
+		153C04F322411095004B5FC4 /* NibRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C04F222411095004B5FC4 /* NibRow.swift */; };
+		153C04F422411095004B5FC4 /* NibRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C04F222411095004B5FC4 /* NibRow.swift */; };
+		153C04F7224115C8004B5FC4 /* RowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C04F6224115C8004B5FC4 /* RowLayout.swift */; };
+		153C04F8224115C8004B5FC4 /* RowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C04F6224115C8004B5FC4 /* RowLayout.swift */; };
+		153C04FA224115EE004B5FC4 /* RowEdition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C04F9224115EE004B5FC4 /* RowEdition.swift */; };
+		153C04FB224115EE004B5FC4 /* RowEdition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C04F9224115EE004B5FC4 /* RowEdition.swift */; };
+		153C04FD224115F9004B5FC4 /* RowSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C04FC224115F9004B5FC4 /* RowSelection.swift */; };
+		153C04FE224115F9004B5FC4 /* RowSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C04FC224115F9004B5FC4 /* RowSelection.swift */; };
+		153C050022412DEC004B5FC4 /* Source+UITableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C04FF22412DEC004B5FC4 /* Source+UITableViewDelegate.swift */; };
+		153C050122412DEC004B5FC4 /* Source+UITableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C04FF22412DEC004B5FC4 /* Source+UITableViewDelegate.swift */; };
+		153C050322412DFD004B5FC4 /* Source+UITableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C050222412DFD004B5FC4 /* Source+UITableViewDataSource.swift */; };
+		153C050422412DFD004B5FC4 /* Source+UITableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C050222412DFD004B5FC4 /* Source+UITableViewDataSource.swift */; };
+		153C050622414A1D004B5FC4 /* CustomHeaderWithAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C050522414A1D004B5FC4 /* CustomHeaderWithAction.swift */; };
+		153C050722414A1D004B5FC4 /* CustomHeaderWithAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C050522414A1D004B5FC4 /* CustomHeaderWithAction.swift */; };
+		153C050922414A2E004B5FC4 /* CustomHeaderWithAction.xib in Resources */ = {isa = PBXBuildFile; fileRef = 153C050822414A2E004B5FC4 /* CustomHeaderWithAction.xib */; };
+		153C050A22414A2E004B5FC4 /* CustomHeaderWithAction.xib in Resources */ = {isa = PBXBuildFile; fileRef = 153C050822414A2E004B5FC4 /* CustomHeaderWithAction.xib */; };
 		153D9CDF223ECA5200337B4E /* Custom.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 153D9CDE223ECA5200337B4E /* Custom.storyboard */; };
 		153D9CE1223ECA6200337B4E /* CustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153D9CE0223ECA6200337B4E /* CustomViewController.swift */; };
 		153D9CE7223ECC4400337B4E /* CustomData.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 153D9CE6223ECC4400337B4E /* CustomData.storyboard */; };
@@ -83,6 +104,19 @@
 		15389591223E5D7A0034AB6A /* NativeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeRow.swift; sourceTree = "<group>"; };
 		15389593223E5D860034AB6A /* NativeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeCell.swift; sourceTree = "<group>"; };
 		15389597223E65290034AB6A /* Native.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Native.storyboard; sourceTree = "<group>"; };
+		153AC9592241983D00CA3E1E /* IndexedRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexedRow.swift; sourceTree = "<group>"; };
+		153AC95B224198B500CA3E1E /* IndexedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexedCell.swift; sourceTree = "<group>"; };
+		153C04EC224102C9004B5FC4 /* StoreRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreRow.swift; sourceTree = "<group>"; };
+		153C04EE224102D4004B5FC4 /* StoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCell.swift; sourceTree = "<group>"; };
+		153C04F0224102DF004B5FC4 /* StoreCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StoreCell.xib; sourceTree = "<group>"; };
+		153C04F222411095004B5FC4 /* NibRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibRow.swift; sourceTree = "<group>"; };
+		153C04F6224115C8004B5FC4 /* RowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowLayout.swift; sourceTree = "<group>"; };
+		153C04F9224115EE004B5FC4 /* RowEdition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowEdition.swift; sourceTree = "<group>"; };
+		153C04FC224115F9004B5FC4 /* RowSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowSelection.swift; sourceTree = "<group>"; };
+		153C04FF22412DEC004B5FC4 /* Source+UITableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Source+UITableViewDelegate.swift"; sourceTree = "<group>"; };
+		153C050222412DFD004B5FC4 /* Source+UITableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Source+UITableViewDataSource.swift"; sourceTree = "<group>"; };
+		153C050522414A1D004B5FC4 /* CustomHeaderWithAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderWithAction.swift; sourceTree = "<group>"; };
+		153C050822414A2E004B5FC4 /* CustomHeaderWithAction.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomHeaderWithAction.xib; sourceTree = "<group>"; };
 		153D9CDE223ECA5200337B4E /* Custom.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Custom.storyboard; sourceTree = "<group>"; };
 		153D9CE0223ECA6200337B4E /* CustomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewController.swift; sourceTree = "<group>"; };
 		153D9CE6223ECC4400337B4E /* CustomData.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CustomData.storyboard; sourceTree = "<group>"; };
@@ -167,12 +201,19 @@
 			path = Native;
 			sourceTree = "<group>";
 		};
+		153C04F5224115BB004B5FC4 /* protocols */ = {
+			isa = PBXGroup;
+			children = (
+				153C04F6224115C8004B5FC4 /* RowLayout.swift */,
+				153C04F9224115EE004B5FC4 /* RowEdition.swift */,
+				153C04FC224115F9004B5FC4 /* RowSelection.swift */,
+			);
+			path = protocols;
+			sourceTree = "<group>";
+		};
 		153D9CDD223ECA3F00337B4E /* Custom */ = {
 			isa = PBXGroup;
 			children = (
-				154930AE22399C1E002693F1 /* header */,
-				1549309F22399C1E002693F1 /* footer */,
-				154930A222399C1E002693F1 /* cells */,
 				153D9CDE223ECA5200337B4E /* Custom.storyboard */,
 				153D9CE0223ECA6200337B4E /* CustomViewController.swift */,
 			);
@@ -234,6 +275,9 @@
 		1549309E22399C1E002693F1 /* classes */ = {
 			isa = PBXGroup;
 			children = (
+				154930AE22399C1E002693F1 /* header */,
+				1549309F22399C1E002693F1 /* footer */,
+				154930A222399C1E002693F1 /* cells */,
 				154930AB22399C1E002693F1 /* examples */,
 			);
 			path = classes;
@@ -254,6 +298,11 @@
 				153D9CFB223ED44700337B4E /* CustomRow.swift */,
 				154930A322399C1E002693F1 /* CustomCell.swift */,
 				153D9CF7223ED29100337B4E /* CustomCell.xib */,
+				153C04EC224102C9004B5FC4 /* StoreRow.swift */,
+				153C04EE224102D4004B5FC4 /* StoreCell.swift */,
+				153C04F0224102DF004B5FC4 /* StoreCell.xib */,
+				153AC9592241983D00CA3E1E /* IndexedRow.swift */,
+				153AC95B224198B500CA3E1E /* IndexedCell.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -285,6 +334,8 @@
 			children = (
 				154930AF22399C1E002693F1 /* CustomHeader.swift */,
 				154930B022399C1E002693F1 /* CustomHeader.xib */,
+				153C050522414A1D004B5FC4 /* CustomHeaderWithAction.swift */,
+				153C050822414A2E004B5FC4 /* CustomHeaderWithAction.xib */,
 			);
 			path = header;
 			sourceTree = "<group>";
@@ -346,7 +397,9 @@
 		15574F1020F263F900BC1089 /* row */ = {
 			isa = PBXGroup;
 			children = (
+				153C04F5224115BB004B5FC4 /* protocols */,
 				15574F1120F263F900BC1089 /* Row.swift */,
+				153C04F222411095004B5FC4 /* NibRow.swift */,
 				15389591223E5D7A0034AB6A /* NativeRow.swift */,
 			);
 			path = row;
@@ -356,6 +409,8 @@
 			isa = PBXGroup;
 			children = (
 				15574F1320F263F900BC1089 /* Source.swift */,
+				153C04FF22412DEC004B5FC4 /* Source+UITableViewDelegate.swift */,
+				153C050222412DFD004B5FC4 /* Source+UITableViewDataSource.swift */,
 			);
 			path = source;
 			sourceTree = "<group>";
@@ -528,7 +583,9 @@
 				153D9CE7223ECC4400337B4E /* CustomData.storyboard in Resources */,
 				1549309922399BF8002693F1 /* Assets.xcassets in Resources */,
 				153D9CEC223ECC6600337B4E /* Editable.storyboard in Resources */,
+				153C04F1224102DF004B5FC4 /* StoreCell.xib in Resources */,
 				154930BB22399C1E002693F1 /* CustomHeader.xib in Resources */,
+				153C050A22414A2E004B5FC4 /* CustomHeaderWithAction.xib in Resources */,
 				153D9CF8223ED29100337B4E /* CustomCell.xib in Resources */,
 				1549309A22399BF8002693F1 /* LaunchScreen.storyboard in Resources */,
 				153D9CEE223ECC7000337B4E /* Animated.storyboard in Resources */,
@@ -542,6 +599,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				153C050922414A2E004B5FC4 /* CustomHeaderWithAction.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -562,25 +620,35 @@
 				15389596223E5E940034AB6A /* NativeCell.swift in Sources */,
 				154930B622399C1E002693F1 /* Store.swift in Sources */,
 				154930B422399C1E002693F1 /* StoreOpenedCellPresenter.swift in Sources */,
+				153C04FE224115F9004B5FC4 /* RowSelection.swift in Sources */,
 				154930B522399C1E002693F1 /* StoreNameCellPresenter.swift in Sources */,
+				153C050722414A1D004B5FC4 /* CustomHeaderWithAction.swift in Sources */,
+				153C050122412DEC004B5FC4 /* Source+UITableViewDelegate.swift in Sources */,
 				154930C222399F11002693F1 /* Footer.swift in Sources */,
 				153D9CFC223ED44700337B4E /* CustomRow.swift in Sources */,
 				154930BF22399F11002693F1 /* Section.swift in Sources */,
+				153C04ED224102C9004B5FC4 /* StoreRow.swift in Sources */,
 				15389595223E5E910034AB6A /* NativeRow.swift in Sources */,
+				153AC95A2241983D00CA3E1E /* IndexedRow.swift in Sources */,
 				154930B922399C1E002693F1 /* NativeViewController.swift in Sources */,
 				1549309C22399BF8002693F1 /* AppDelegate.swift in Sources */,
 				154930B322399C1E002693F1 /* CustomCell.swift in Sources */,
 				153D9CF0223ECC8A00337B4E /* CustomDataViewController.swift in Sources */,
 				154930C322399F11002693F1 /* NativeFooter.swift in Sources */,
+				153C04F8224115C8004B5FC4 /* RowLayout.swift in Sources */,
+				153C050422412DFD004B5FC4 /* Source+UITableViewDataSource.swift in Sources */,
 				154930C522399F11002693F1 /* CellPresenter.swift in Sources */,
 				153D9CF4223ECCA300337B4E /* EditableViewController.swift in Sources */,
 				154930C622399F11002693F1 /* CellClosurePresenter.swift in Sources */,
 				154930B122399C1E002693F1 /* CustomFooter.swift in Sources */,
 				153D9CF6223ECCAD00337B4E /* AnimatedViewController.swift in Sources */,
+				153C04FB224115EE004B5FC4 /* RowEdition.swift in Sources */,
 				154930BD22399F11002693F1 /* Source.swift in Sources */,
 				154930C022399F11002693F1 /* Header.swift in Sources */,
 				1549309822399BF8002693F1 /* ViewController.swift in Sources */,
 				154930BC22399F11002693F1 /* TableView.swift in Sources */,
+				153C04EF224102D4004B5FC4 /* StoreCell.swift in Sources */,
+				153AC95C224198B500CA3E1E /* IndexedCell.swift in Sources */,
 				153D9CE1223ECA6200337B4E /* CustomViewController.swift in Sources */,
 				154930C122399F11002693F1 /* NativeHeader.swift in Sources */,
 				154930C822399F11002693F1 /* Config.swift in Sources */,
@@ -588,6 +656,7 @@
 				154930C722399F11002693F1 /* Cell.swift in Sources */,
 				153D9CF2223ECC9900337B4E /* ConfigurationViewController.swift in Sources */,
 				154930C422399F11002693F1 /* Row.swift in Sources */,
+				153C04F422411095004B5FC4 /* NibRow.swift in Sources */,
 				154930BE22399F11002693F1 /* BaseSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -602,15 +671,22 @@
 				15574F2020F269F900BC1089 /* Section.swift in Sources */,
 				15A9654A20FB90F500C630DF /* Footer.swift in Sources */,
 				15389592223E5D7A0034AB6A /* NativeRow.swift in Sources */,
+				153C050022412DEC004B5FC4 /* Source+UITableViewDelegate.swift in Sources */,
 				15A9654020FB71BB00C630DF /* Header.swift in Sources */,
+				153C04FD224115F9004B5FC4 /* RowSelection.swift in Sources */,
 				15574F2820F289D900BC1089 /* Cell.swift in Sources */,
+				153C04F322411095004B5FC4 /* NibRow.swift in Sources */,
 				15A9654220FB806800C630DF /* Config.swift in Sources */,
 				15574F1D20F264A500BC1089 /* TableView.swift in Sources */,
 				15389594223E5D860034AB6A /* NativeCell.swift in Sources */,
 				1586EE2B20F693940034C35D /* BaseSection.swift in Sources */,
+				153C050322412DFD004B5FC4 /* Source+UITableViewDataSource.swift in Sources */,
 				1550404520F9E3A800886618 /* CellClosurePresenter.swift in Sources */,
+				153C04F7224115C8004B5FC4 /* RowLayout.swift in Sources */,
 				15574F1420F263F900BC1089 /* Row.swift in Sources */,
+				153C050622414A1D004B5FC4 /* CustomHeaderWithAction.swift in Sources */,
 				1586EE2120F68C4F0034C35D /* CellPresenter.swift in Sources */,
+				153C04FA224115EE004B5FC4 /* RowEdition.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
