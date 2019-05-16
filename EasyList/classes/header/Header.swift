@@ -19,6 +19,6 @@ import UIKit
 }
 
 open class BaseHeader: UIView, HeaderLayout, HeaderDelegate {
-    public var section: BaseSection?
+    public var section: BaseTableSection?
     public weak var delegate: HeaderDelegate?
 }

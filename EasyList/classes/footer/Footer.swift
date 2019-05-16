@@ -19,7 +19,7 @@ import UIKit
 }
 
 open class BaseFooter: UIView, FooterLayout, FooterDelegate {
-    public var section: BaseSection?
+    public var section: BaseTableSection?
     public weak var delegate: FooterDelegate?
 }
 

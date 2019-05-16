@@ -9,8 +9,8 @@
 import Foundation
 import UIKit
 
-public class TableView: UITableView {
-    public var source: Source? {
+open class TableView: UITableView {
+    public var source: TableSource? {
         didSet {
             delegate = source
             dataSource = source

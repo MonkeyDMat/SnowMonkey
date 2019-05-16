@@ -8,5 +8,5 @@
 
 import Foundation
 
-public class IndexedCell: Cell<Int> {
+public class IndexedCell: TableCell<Int> {
 }

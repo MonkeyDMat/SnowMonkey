@@ -9,6 +9,6 @@
 import Foundation
 import UIKit
 
-class StoreCell: Cell<Store> {
+class StoreCell: TableCell<Store> {
     @IBOutlet weak var label: UILabel?
 }
