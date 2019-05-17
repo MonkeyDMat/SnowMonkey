@@ -38,7 +38,7 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
         return section
     }
     
-    func getSection(index: Int) -> BaseTableSection {
+    public func getSection(index: Int) -> BaseTableSection {
         return sections[index]
     }
     
@@ -47,18 +47,28 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     }
     
     //MARK: - Header
-    func getHeader(index: Int) -> BaseHeader? {
+    public func getHeader(index: Int) -> BaseHeader? {
         return getSection(index: index).getHeader()
     }
     
     //MARK: - Footer
-    func getFooter(index: Int) -> BaseFooter? {
+    public func getFooter(index: Int) -> BaseFooter? {
         return getSection(index: index).getFooter()
     }
     
     //MARK: - Row
-    func getRow(indexPath: IndexPath) -> RowType {
+    public func getRow(indexPath: IndexPath) -> IdentifiedTableRow {
         return getSection(index: indexPath.section).getRow(at: indexPath.row)
+    }
+    
+    public func getRow(by id: String) -> IdentifiedTableRow? {
+        for section in sections {
+            if let row = section.getRow(by: id) {
+                return row
+            }
+        }
+        
+        return nil
     }
     
     @discardableResult
@@ -71,6 +81,12 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
             tableView?.insertRows(at: [indexPath], with: animation)
         }
         return self
+    }
+    
+    func updateRow(_ updateBlock: () -> Void) {
+        tableView?.beginUpdates()
+        updateBlock()
+        tableView?.endUpdates()
     }
     
     @discardableResult

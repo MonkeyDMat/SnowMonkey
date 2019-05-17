@@ -52,13 +52,13 @@ extension TableSource: UITableViewDelegate {
     
     //MARK: - Cell layout
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let row = getRow(indexPath: indexPath)
-        return row.rowHeight?() ?? UITableView.automaticDimension
+        let identifiedRow = getRow(indexPath: indexPath)
+        return identifiedRow.row.rowHeight?() ?? UITableView.automaticDimension
     }
     
     public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        let row = getRow(indexPath: indexPath)
-        return row.estimatedRowHeight?() ?? CGFloat(40)
+        let identifiedRow = getRow(indexPath: indexPath)
+        return identifiedRow.row.estimatedRowHeight?() ?? CGFloat(40)
     }
     
     //MARK: - Header rendering delegate
@@ -125,34 +125,34 @@ extension TableSource: UITableViewDelegate {
     
     //MARK: - Selection
     public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        let row = getRow(indexPath: indexPath)
-        return row.willSelect?(index: indexPath)
+        let identifiedRow = getRow(indexPath: indexPath)
+        return identifiedRow.row.willSelect?(index: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
-        let row = getRow(indexPath: indexPath)
-        return row.willDeselect?(index: indexPath)
+        let identifiedRow = getRow(indexPath: indexPath)
+        return identifiedRow.row.willDeselect?(index: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let row = getRow(indexPath: indexPath)
-        row.didSelect?(index: indexPath)
+        let identifiedRow = getRow(indexPath: indexPath)
+        identifiedRow.row.didSelect?(index: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let row = getRow(indexPath: indexPath)
-        row.didDeselect?(index: indexPath)
+        let identifiedRow = getRow(indexPath: indexPath)
+        identifiedRow.row.didDeselect?(index: indexPath)
     }
     
     //MARK: - Edition
     public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        let row = getRow(indexPath: indexPath)
-        return row.getEditingStyle?() ?? .none
+        let identifiedRow = getRow(indexPath: indexPath)
+        return identifiedRow.row.getEditingStyle?() ?? .none
     }
     
     public func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        let row = getRow(indexPath: indexPath)
-        return row.getTitleForDeleteConfirmation?()
+        let identifiedRow = getRow(indexPath: indexPath)
+        return identifiedRow.row.getTitleForDeleteConfirmation?()
     }
     
     

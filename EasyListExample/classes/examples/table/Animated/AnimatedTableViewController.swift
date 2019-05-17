@@ -52,7 +52,7 @@ class AnimatedTableViewController: UIViewController {
                                         return false
                                     }
                                     return currentIndexedRow.index < newRow.index
-                }, animation: .automatic)
+                }, animation: .bottom)
             }
         }
     }

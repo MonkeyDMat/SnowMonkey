@@ -16,21 +16,22 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     typealias ReturnType = BaseTableSection
     
     public weak var source: TableSource?
-    var rows: [RowType] = []
+    var rows: [IdentifiedTableRow] = []
     
     @discardableResult
-    public func addRow(_ row: RowType, at index: Int? = nil, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
+    public func addRow(_ row: RowType, at index: Int? = nil, id: String? = nil, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
         row.setSection?(section: self)
         let rowIndex = index ?? rows.count
-        rows.insert(row, at: rowIndex)
+        rows.insert((id, row), at: rowIndex)
         source?.addRow(at: rowIndex, in: self, animation: animation)
         return self
     }
     
     @discardableResult
     public func addRow<RowTypeToInsert: RowType>(_ row: RowTypeToInsert,
-                                                 after predicate: (RowType, RowTypeToInsert) -> Bool,
-                                                 animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
+                                                            after predicate: (IdentifiedTableRow, RowTypeToInsert) -> Bool,
+                                                            id: String? = nil,
+                                                            animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
         row.setSection?(section: self)
         var rowIndex = 0
         for (currentIndex, currentRow) in rows.enumerated() {
@@ -38,9 +39,13 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
                 rowIndex = max(rowIndex, currentIndex + 1)
             }
         }
-        rows.insert(row, at: rowIndex)
+        rows.insert((id, row), at: rowIndex)
         source?.addRow(at: rowIndex, in: self, animation: animation)
         return self
+    }
+    
+    func updateRow(_ updateBlock: () -> Void) {
+        source?.updateRow(updateBlock)
     }
     
     @discardableResult
@@ -51,7 +56,7 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     }
     
     @discardableResult
-    public func deleteAllRow(where predicate: (RowType) -> Bool) -> BaseTableSection {
+    public func deleteAllRow(where predicate: ((String?, RowType)) -> Bool) -> BaseTableSection {
         rows.removeAll(where: predicate)
         return self
     }
@@ -70,8 +75,20 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
         return nil
     }
     
-    public func getRow(at index: Int) -> RowType {
+    public func getRow(at index: Int) -> IdentifiedTableRow {
         return rows[index]
+    }
+    
+    public func getRow(by id: String) -> IdentifiedTableRow? {
+        return rows.first { (row) -> Bool in
+            return row.id == id
+        }
+    }
+    
+    func getRowIndex(of row: RowType) -> Int? {
+        return rows.firstIndex(where: { (_, currentRow) -> Bool in
+            return currentRow === row
+        })
     }
     
     //MARK: - Internal Methods

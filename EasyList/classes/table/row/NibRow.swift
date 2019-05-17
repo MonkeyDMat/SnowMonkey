@@ -28,8 +28,6 @@ open class NibRow<SourceType, CellType: TableCell<SourceType>>: Row<SourceType, 
             fatalError("Nib Name is not set for row : " + String(describing:type(of: self)))
         }
         
-        var cell: CellType?
-        
         let cellNib = UINib(nibName: nibName, bundle: nil)
         
         if let cellIdentifier = cellIdentifier {

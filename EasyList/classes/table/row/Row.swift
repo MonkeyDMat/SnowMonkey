@@ -13,11 +13,15 @@ import UIKit
     @objc optional func setSection(section: BaseTableSection)
 }
 
+
+public typealias IdentifiedTableRow = (id: String?, row: RowType)
+
 open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutProvider, RowEditionProvider, RowSelectionProvider {
     
     typealias ReturnType = Row<SourceType, CellType>
     
     var data: SourceType?
+    open var cell: CellType?
     var cellIdentifier: String?
     var cellPresenter: BaseCellPresenter<CellType, SourceType>?
     
@@ -36,10 +40,17 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
         self.cellPresenter = closurePresenter
     }
     
+    open func updateRow(data: SourceType) {
+        if cell != nil {
+            section?.updateRow({
+                self.data = data
+                cellPresenter?.configureCell(cell: cell!, source: data)
+            })
+        }
+    }
+    
     //MARK: - RowType
     public func getCell(tableView: UITableView) -> UITableViewCell {
-        var cell: CellType?
-        
         if let cellIdentifier = cellIdentifier {
             tableView.register(CellType.self, forCellReuseIdentifier: cellIdentifier)
             cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CellType
@@ -84,6 +95,7 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
         return _selectionStyle?(self) ??
             section?._selectionStyle?(self) ??
             section?.source?._selectionStyle?(self) ??
+            cell?.selectionStyle ??
             UITableViewCell.SelectionStyle.default
     }
     

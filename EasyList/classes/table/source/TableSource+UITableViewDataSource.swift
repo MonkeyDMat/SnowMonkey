@@ -43,18 +43,18 @@ extension TableSource: UITableViewDataSource {
     
     //MARK: - Row
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = getRow(indexPath: indexPath)
+        let identifiedRow = getRow(indexPath: indexPath)
         
-        let cell = row.getCell(tableView: tableView)
-        cell.selectionStyle = row.selectionStyle?() ?? UITableViewCell.SelectionStyle.default
+        let cell = identifiedRow.row.getCell(tableView: tableView)
+        cell.selectionStyle = identifiedRow.row.selectionStyle?() ?? cell.selectionStyle
         
         return cell
     }
     
     //MARK: - Edit row
     public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        let row = getRow(indexPath: indexPath)
-        return row.isEditable?() ?? false
+        let identifiedRow = getRow(indexPath: indexPath)
+        return identifiedRow.row.isEditable?() ?? false
     }
     
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
