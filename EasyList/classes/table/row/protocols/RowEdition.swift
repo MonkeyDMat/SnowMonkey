@@ -21,14 +21,3 @@ protocol RowEditionProvider: class {
     var _editingStyle: ((RowType) -> UITableViewCell.EditingStyle)? { get set }
     var _titleForDeleteConfirmation: ((RowType) -> String?)? { get set }
 }
-
-extension RowEditionProvider {
-    @discardableResult
-    // ToDo add row as callback parameter
-    public func setEditable(editable: ((RowType) -> Bool)?, editingStyle: ((RowType) -> UITableViewCell.EditingStyle)? = { row in return .delete}, titleForDeleteConfirmation: ((RowType) -> String?)? = nil) -> ReturnType {
-        _editable = editable
-        _editingStyle = editingStyle
-        _titleForDeleteConfirmation = titleForDeleteConfirmation
-        return self as! ReturnType
-    }
-}

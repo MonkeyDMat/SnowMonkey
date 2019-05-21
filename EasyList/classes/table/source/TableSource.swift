@@ -10,7 +10,7 @@ import UIKit
 
 open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowEditionProvider, RowSelection, RowSelectionProvider {
     
-    typealias ReturnType = TableSource
+    public typealias ReturnType = TableSource
     
     var sections: [BaseTableSection]
     public var delegate: TableSourceDelegate?
@@ -105,16 +105,68 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     var _estimatedHeight: ((RowType) -> CGFloat)?
     var _selectionStyle: ((RowType) -> UITableViewCell.SelectionStyle)?
     
+    @discardableResult
+    open func setRowHeight(_ height: ((RowType) -> CGFloat)?) -> ReturnType {
+        _height = height
+        return self
+    }
+    
+    @discardableResult
+    open func setRowEstimatedHeight(_ estimatedHeight: ((RowType) -> CGFloat)?) -> ReturnType {
+        _estimatedHeight = estimatedHeight
+        return self
+    }
+    
+    @discardableResult
+    open func setRowSelectionStyle(_ selectionStyle: ((RowType) -> UITableViewCell.SelectionStyle)?) -> ReturnType {
+        _selectionStyle = selectionStyle
+        return self
+    }
+    
     //MARK: - RowEditionProvider
     var _editable: ((RowType) -> Bool)?
     var _editingStyle: ((RowType) -> UITableViewCell.EditingStyle)?
     var _titleForDeleteConfirmation: ((RowType) -> String?)?
+    
+    @discardableResult
+    // ToDo add row as callback parameter
+    open func setEditable(editable: ((RowType) -> Bool)?, editingStyle: ((RowType) -> UITableViewCell.EditingStyle)? = { row in return .delete}, titleForDeleteConfirmation: ((RowType) -> String?)? = nil) -> ReturnType {
+        _editable = editable
+        _editingStyle = editingStyle
+        _titleForDeleteConfirmation = titleForDeleteConfirmation
+        return self
+    }
     
     //MARK: - RowSelectionProvider
     var _willSelect: ((IndexPath) -> IndexPath?)?
     var _didSelect: ((_ index: IndexPath) -> Void)?
     var _willDeselect: ((IndexPath) -> IndexPath?)?
     var _didDeselect: ((_ index: IndexPath) -> Void)?
+    
+    @discardableResult
+    open func setWillSelect(_ willSelect: ((_ index: IndexPath) -> IndexPath?)?) -> ReturnType {
+        _willSelect = willSelect
+        return self
+    }
+    
+    
+    @discardableResult
+    open func setDidSelect(_ didSelect: ((_ index: IndexPath) -> Void)?) -> ReturnType {
+        _didSelect = didSelect
+        return self
+    }
+    
+    @discardableResult
+    open func setWillDeselect(_ willDeselect: ((_ index: IndexPath) -> IndexPath?)?) -> ReturnType {
+        _willDeselect = willDeselect
+        return self
+    }
+    
+    @discardableResult
+    open func setDidDeselect(_ didDeselect: ((_ index: IndexPath) -> Void)?) -> ReturnType {
+        _didDeselect = didDeselect
+        return self
+    }
 }
 
 @objc public protocol TableSourceDelegate {

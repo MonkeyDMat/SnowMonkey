@@ -21,23 +21,3 @@ protocol RowLayoutProvider: class {
     var _estimatedHeight: ((RowType) -> CGFloat)? { get set }
     var _selectionStyle: ((RowType) -> UITableViewCell.SelectionStyle)? { get set }
 }
-
-extension RowLayoutProvider {
-    @discardableResult
-    public func setRowHeight(_ height: ((RowType) -> CGFloat)?) -> ReturnType {
-        _height = height
-        return self as! ReturnType
-    }
-    
-    @discardableResult
-    public func setRowEstimatedHeight(_ estimatedHeight: ((RowType) -> CGFloat)?) -> ReturnType {
-        _estimatedHeight = estimatedHeight
-        return self as! ReturnType
-    }
-    
-    @discardableResult
-    public func setRowSelectionStyle(_ selectionStyle: ((RowType) -> UITableViewCell.SelectionStyle)?) -> ReturnType {
-        _selectionStyle = selectionStyle
-        return self as! ReturnType
-    }
-}
