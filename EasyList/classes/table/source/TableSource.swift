@@ -169,7 +169,7 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     }
 }
 
-@objc public protocol TableSourceDelegate {
+@objc public protocol TableSourceDelegate: UIScrollViewDelegate {
     @objc optional func canMoveRow(at: IndexPath, for tableView: UITableView) -> Bool
     @objc optional func sectionIndexTitles(for tableView: UITableView) -> [String]?
     @objc optional func sectionForSectionIndexTitle(for tableView: UITableView, title: String, at index: Int) -> Int
