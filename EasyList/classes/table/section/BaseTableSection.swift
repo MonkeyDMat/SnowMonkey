@@ -56,6 +56,17 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     }
     
     @discardableResult
+    public func deleteRow(with id: String, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
+        guard let identifiedRow = getRow(by: id),
+            let index = getRowIndex(of: identifiedRow.row)else {
+            return self
+        }
+        rows.remove(at: index)
+        source?.deleteRow(at: index, in: self, animation: animation)
+        return self
+    }
+    
+    @discardableResult
     public func deleteAllRow(where predicate: ((String?, RowType)) -> Bool) -> BaseTableSection {
         rows.removeAll(where: predicate)
         return self
