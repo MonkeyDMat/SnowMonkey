@@ -80,7 +80,9 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
         }
         let indexPath = IndexPath(row: index, section: sectionIndex)
         if let animation = animation {
+            tableView?.beginUpdates()
             tableView?.insertRows(at: [indexPath], with: animation)
+            tableView?.endUpdates()
         }
         return self
     }
@@ -97,7 +99,9 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
             return self
         }
         if let animation = animation {
+            tableView?.beginUpdates()
             tableView?.deleteRows(at: [IndexPath(row: index, section: sectionIndex)], with: animation)
+            tableView?.endUpdates()
         }
         return self
     }
