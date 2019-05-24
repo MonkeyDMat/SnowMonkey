@@ -27,6 +27,13 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
     
     private var section: BaseTableSection?
     
+    var verbose: Bool?
+    private var _verbose: Bool {
+        get {
+            return verbose ?? section?.verbose ?? false
+        }
+    }
+    
     public init(data: SourceType? = nil, cellIdentifier: String? = nil, cellPresenter: BaseCellPresenter<CellType, SourceType>? = nil) {
         self.data = data
         self.cellIdentifier = cellIdentifier

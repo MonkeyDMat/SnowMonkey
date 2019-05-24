@@ -12,6 +12,8 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     
     public typealias ReturnType = TableSource
     
+    public var verbose: Bool = false
+    
     var sections: [BaseTableSection]
     public var delegate: TableSourceDelegate?
     public weak var tableView: TableView?

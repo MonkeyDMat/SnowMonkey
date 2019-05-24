@@ -18,10 +18,22 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     public weak var source: TableSource?
     var rows: [IdentifiedTableRow] = []
     
+    var verbose: Bool?
+    private var _verbose: Bool {
+        get {
+            return verbose ?? source?.verbose ?? false
+        }
+    }
+    
     @discardableResult
     public func addRow(_ row: RowType, at index: Int? = nil, id: String? = nil, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
         row.setSection?(section: self)
         let rowIndex = index ?? rows.count
+        
+        if _verbose {
+            print("[EasyList] AddRow \(row) id \(id ?? "") at \(rowIndex)")
+        }
+        
         rows.insert((id, row), at: rowIndex)
         source?.addRow(at: rowIndex, in: self, animation: animation)
         return self
@@ -39,6 +51,11 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
                 rowIndex = max(rowIndex, currentIndex + 1)
             }
         }
+        
+        if _verbose {
+            print("[EasyList] AddRow \(row) id \(id ?? "") at \(rowIndex)")
+        }
+        
         rows.insert((id, row), at: rowIndex)
         source?.addRow(at: rowIndex, in: self, animation: animation)
         return self
@@ -50,6 +67,11 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     
     @discardableResult
     public func deleteRow(at index: Int, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
+        
+        if _verbose {
+            print("[EasyList] DeleteRow at \(index)")
+        }
+        
         rows.remove(at: index)
         source?.deleteRow(at: index, in: self, animation: animation)
         return self
@@ -61,6 +83,11 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
             let index = getRowIndex(of: identifiedRow.row)else {
             return self
         }
+        
+        if _verbose {
+            print("[EasyList] DeleteRow \(identifiedRow.id ?? "") at \(index)")
+        }
+        
         rows.remove(at: index)
         source?.deleteRow(at: index, in: self, animation: animation)
         return self
@@ -68,12 +95,22 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     
     @discardableResult
     public func deleteAllRow(where predicate: ((String?, RowType)) -> Bool) -> BaseTableSection {
+        
+        if _verbose {
+            print("[EasyList] DeleteAllRows where")
+        }
+        
         rows.removeAll(where: predicate)
         return self
     }
     
     @discardableResult
     public func deleteAllRows() -> BaseTableSection {
+        
+        if _verbose {
+            print("[EasyList] DeleteAllRows")
+        }
+        
         rows.removeAll()
         return self
     }
