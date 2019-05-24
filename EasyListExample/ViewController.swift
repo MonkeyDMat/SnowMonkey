@@ -24,6 +24,7 @@ class ViewController: UIViewController {
         source.setRowSelectionStyle { (_) -> UITableViewCell.SelectionStyle in
             return .none
         }
+        source.verbose = true
         
         // Table
         let tableSection = TableSection(header: NativeHeader(title: "Table"), footer: nil)

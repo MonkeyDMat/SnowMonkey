@@ -8,6 +8,25 @@
 
 import UIKit
 
+enum SourceUpdateKind {
+    case insert
+    case delete
+}
+
+struct SourceUpdate: CustomStringConvertible {
+    var kind: SourceUpdateKind
+    var section: BaseTableSection
+    var id: String?
+    var row:RowType?
+    var index: Int?
+    var after: ((IdentifiedTableRow, RowType) -> Bool)?
+    var animation: UITableView.RowAnimation?
+    
+    var description: String {
+        return "\(kind) - \(id) - \(row) at \(index) using \(animation)"
+    }
+}
+
 open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowEditionProvider, RowSelection, RowSelectionProvider {
     
     public typealias ReturnType = TableSource
@@ -17,6 +36,9 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     var sections: [BaseTableSection]
     public var delegate: TableSourceDelegate?
     public weak var tableView: TableView?
+    
+    private var updateQueue = Queue<SourceUpdate>()
+    private var isUpdating: Bool = false
     
     public init(sections: [BaseTableSection] = [], tableView: TableView, delegate: TableSourceDelegate? = nil) {
         self.sections = sections
@@ -73,17 +95,42 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
         return nil
     }
     
+    // MARK: - Queue
+    func getQueuedRow(_ id: String) -> IdentifiedTableRow? {
+        for section in sections {
+            if let row = getQueuedRow(id, in: section) {
+                return row
+            }
+        }
+        return nil
+    }
+    
+    func getQueuedRow(_ id: String, in section: BaseTableSection) -> IdentifiedTableRow? {
+        if let update = updateQueue.toArray().first(where: { (update) -> Bool in
+            return update.section === section && update.id == id
+        }) {
+            return (id: update.id, row: update.row) as? IdentifiedTableRow
+        }
+        return nil
+    }
+    
     @discardableResult
-    func addRow(at index: Int, in section: BaseTableSection, animation: UITableView.RowAnimation? = nil) -> TableSource {
-        guard let sectionIndex = getIndex(of: section) else {
-            return self
+    func addRow(_ row: RowType, id: String?, at index: Int?, after: ((IdentifiedTableRow, RowType) -> Bool)?, in section: BaseTableSection, animation: UITableView.RowAnimation? = nil) -> TableSource {
+        
+        updateQueue.enqueue(element: SourceUpdate(kind: .insert,
+                                                  section: section,
+                                                  id: id,
+                                                  row: row,
+                                                  index: index,
+                                                  after: after,
+                                                  animation: animation))
+        
+        if verbose {
+            print("[EasyList] QUEUE : \(updateQueue)")
         }
-        let indexPath = IndexPath(row: index, section: sectionIndex)
-        if let animation = animation {
-            tableView?.beginUpdates()
-            tableView?.insertRows(at: [indexPath], with: animation)
-            tableView?.endUpdates()
-        }
+        
+        performUpdates()
+        
         return self
     }
     
@@ -95,15 +142,102 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     
     @discardableResult
     func deleteRow(at index: Int, in section: BaseTableSection, animation: UITableView.RowAnimation? = nil) -> TableSource {
-        guard let sectionIndex = getIndex(of: section) else {
-            return self
-        }
-        if let animation = animation {
-            tableView?.beginUpdates()
-            tableView?.deleteRows(at: [IndexPath(row: index, section: sectionIndex)], with: animation)
-            tableView?.endUpdates()
-        }
+        
+        updateQueue.enqueue(element: SourceUpdate(kind: .delete,
+                                                  section: section,
+                                                  id: nil,
+                                                  row: nil,
+                                                  index: index,
+                                                  after: nil,
+                                                  animation: animation))
+        
+        performUpdates()
+        
         return self
+    }
+    
+    private func performUpdates() {
+        if !isUpdating {
+            if verbose {
+                print("[EasyList] UPDATE")
+            }
+            isUpdating = true
+            if #available(iOS 11.0, *) {
+                if let update = updateQueue.dequeue() {
+                    tableView?.performBatchUpdates({
+                        if verbose {
+                            print("[EasyList] PROCESSING : \(update)")
+                        }
+                        doUpdate(update)
+                    }, completion: { (finished) in
+                        self.isUpdating = false
+                        if self.updateQueue.count() != 0 {
+                            self.performUpdates()
+                        }
+                    })
+                }
+            } else {
+                if let update = updateQueue.dequeue() {
+                    CATransaction.begin()
+                    CATransaction.setCompletionBlock {
+                        self.isUpdating = false
+                        if self.updateQueue.count() != 0 {
+                            self.performUpdates()
+                        }
+                    }
+                    tableView?.beginUpdates()
+                    if verbose {
+                        print("[EasyList] PROCESSING : \(update)")
+                    }
+                    doUpdate(update)
+                    tableView?.endUpdates()
+                    CATransaction.commit()
+                }
+            }
+        } else {
+            if verbose {
+                print("[EasyList] ALREADY UPDATING")
+            }
+        }
+    }
+    
+    func doUpdate(_ update: SourceUpdate) {
+        if let indexPath = getIndexPath(for: update) {
+            print("[EasyList DEBUG] \(indexPath.row)")
+            switch update.kind {
+            case .insert:
+                guard let row = update.row else {
+                    return
+                }
+                update.section.insert(id: update.id, row: row, index: indexPath.row)
+                tableView?.insertRows(at: [indexPath], with: update.animation ?? .none)
+            case .delete:
+                update.section.removeRow(index: indexPath.row)
+                tableView?.deleteRows(at: [indexPath], with: update.animation ?? .none)
+            }
+        }
+    }
+    
+    func getIndexPath(for update: SourceUpdate) -> IndexPath? {
+        guard let sectionIndex = getIndex(of: update.section) else {
+            return nil
+        }
+        
+        if let predicate = update.after {
+            var rowIndex = 0
+            guard let row = update.row else {
+                    return nil
+            }
+            for (currentIndex, currentRow) in update.section.rows.enumerated() {
+                if predicate(currentRow, row) {
+                    rowIndex = max(rowIndex, currentIndex + 1)
+                }
+            }
+            return IndexPath(row: rowIndex, section: sectionIndex)
+        } else {
+            let rowIndex = update.index ?? update.section.rows.count
+            return IndexPath(row: rowIndex, section: sectionIndex)
+        }
     }
     
     //MARK: - RowLayoutProvider

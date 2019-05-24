@@ -25,46 +25,45 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
         }
     }
     
+    // MARK: - ADD ROW
     @discardableResult
     public func addRow(_ row: RowType, at index: Int? = nil, id: String? = nil, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
         row.setSection?(section: self)
-        let rowIndex = index ?? rows.count
+        let rowIndex = index
         
         if _verbose {
             print("[EasyList] AddRow \(row) id \(id ?? "") at \(rowIndex)")
         }
         
-        rows.insert((id, row), at: rowIndex)
-        source?.addRow(at: rowIndex, in: self, animation: animation)
+        source?.addRow(row, id: id, at: rowIndex, after: nil, in: self, animation: animation)
         return self
     }
     
     @discardableResult
     public func addRow<RowTypeToInsert: RowType>(_ row: RowTypeToInsert,
-                                                            after predicate: (IdentifiedTableRow, RowTypeToInsert) -> Bool,
-                                                            id: String? = nil,
-                                                            animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
+                                                 after predicate: @escaping (IdentifiedTableRow, RowType) -> Bool,
+                                                 id: String? = nil,
+                                                 animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
         row.setSection?(section: self)
-        var rowIndex = 0
-        for (currentIndex, currentRow) in rows.enumerated() {
-            if predicate(currentRow, row) {
-                rowIndex = max(rowIndex, currentIndex + 1)
-            }
-        }
         
         if _verbose {
-            print("[EasyList] AddRow \(row) id \(id ?? "") at \(rowIndex)")
+            print("[EasyList] AddRow \(row) id \(id ?? ""))")
         }
         
-        rows.insert((id, row), at: rowIndex)
-        source?.addRow(at: rowIndex, in: self, animation: animation)
+        source?.addRow(row, id: id, at: nil, after: predicate, in: self, animation: animation)
         return self
     }
     
+    func insert(id: String?, row: RowType, index: Int) {
+        rows.insert((id, row), at: index)
+    }
+    
+    // MARK: - UPDATE ROW
     func updateRow(_ updateBlock: () -> Void) {
         source?.updateRow(updateBlock)
     }
     
+    // MARK: - DELETE ROW
     @discardableResult
     public func deleteRow(at index: Int, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
         
@@ -72,7 +71,6 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
             print("[EasyList] DeleteRow at \(index)")
         }
         
-        rows.remove(at: index)
         source?.deleteRow(at: index, in: self, animation: animation)
         return self
     }
@@ -88,9 +86,12 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
             print("[EasyList] DeleteRow \(identifiedRow.id ?? "") at \(index)")
         }
         
-        rows.remove(at: index)
         source?.deleteRow(at: index, in: self, animation: animation)
         return self
+    }
+    
+    func removeRow(index: Int) {
+        rows.remove(at: index)
     }
     
     @discardableResult
@@ -115,22 +116,31 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
         return self
     }
     
+    // MARK: - HEADER
     public func getHeader() -> BaseHeader? {
         return nil
     }
     
+    // MARK: - FOOTER
     public func getFooter() -> BaseFooter? {
         return nil
     }
     
+    // MARK: - ROWS
     public func getRow(at index: Int) -> IdentifiedTableRow {
         return rows[index]
     }
     
     public func getRow(by id: String) -> IdentifiedTableRow? {
-        return rows.first { (row) -> Bool in
+        var row: IdentifiedTableRow?
+        
+        row = rows.first { (row) -> Bool in
             return row.id == id
         }
+        
+        row = row ?? source?.getQueuedRow(id, in: self)
+        
+        return row
     }
     
     func getRowIndex(of row: RowType) -> Int? {

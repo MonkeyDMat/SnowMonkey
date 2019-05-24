@@ -12,10 +12,16 @@ extension TableSource: UITableViewDataSource {
     
     //MARK: - Section
     public func numberOfSections(in tableView: UITableView) -> Int {
+        if verbose {
+            print("[EasyList] DataSource numberOfSections \(sections.count)")
+        }
         return sections.count
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if verbose {
+            print("[EasyList] DataSource numberOfRowsInSection \(getSection(index: section).rowCount())")
+        }
         return getSection(index: section).rowCount()
     }
     
@@ -47,6 +53,10 @@ extension TableSource: UITableViewDataSource {
         
         let cell = identifiedRow.row.getCell(tableView: tableView)
         cell.selectionStyle = identifiedRow.row.selectionStyle?() ?? cell.selectionStyle
+        
+        if verbose {
+            print("[EasyList] DataSource cellForRowAt \(indexPath) - \(cell)")
+        }
         
         return cell
     }

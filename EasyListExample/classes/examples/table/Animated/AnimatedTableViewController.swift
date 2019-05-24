@@ -48,10 +48,13 @@ class AnimatedTableViewController: UIViewController {
             let randomDuration = Double.random(in: Range<Double>(uncheckedBounds: (lower: 1.0, upper: 10.0)))
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(randomDuration * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
                 self.source.getSection(index: index).addRow(IndexedRow(index: i), after: { (currentRow, newRow) -> Bool in
-                                    guard let currentIndexedRow = currentRow as? IndexedRow else {
+                                    guard let currentIndexedRow = currentRow.row as? IndexedRow else {
                                         return false
                                     }
-                                    return currentIndexedRow.index < newRow.index
+                    guard let index = (newRow as? IndexedRow)?.index else {
+                        return true
+                    }
+                    return currentIndexedRow.index < index
                 }, animation: .bottom)
             }
         }
