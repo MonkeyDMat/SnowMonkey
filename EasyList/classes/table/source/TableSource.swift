@@ -33,14 +33,14 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     
     public var verbose: Bool = false
     
-    var sections: [BaseTableSection]
+    var sections: [IdentifiedTableSection]
     public var delegate: TableSourceDelegate?
     public weak var tableView: TableView?
     
     private var updateQueue = Queue<SourceUpdate>()
     private var isUpdating: Bool = false
     
-    public init(sections: [BaseTableSection] = [], tableView: TableView, delegate: TableSourceDelegate? = nil) {
+    public init(sections: [IdentifiedTableSection] = [], tableView: TableView, delegate: TableSourceDelegate? = nil) {
         self.sections = sections
         self.tableView = tableView
         self.delegate = delegate
@@ -56,38 +56,48 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     
     //MARK: - Section
     @discardableResult
-    public func addSection(_ section: BaseTableSection) -> BaseTableSection {
+    public func addSection(_ section: BaseTableSection, id: String? = nil) -> BaseTableSection {
         section.source = self
-        sections.append(section)
+        sections.append((id: id, section: section))
         return section
     }
     
-    public func getSection(index: Int) -> BaseTableSection {
+    public func getSection(id: String) -> IdentifiedTableSection? {
+        return sections.first(where: { (arg) -> Bool in
+            let (identifiedId, _) = arg
+            return identifiedId == id
+        })
+    }
+    
+    public func getSection(index: Int) -> IdentifiedTableSection {
         return sections[index]
     }
     
     func getIndex(of section: BaseTableSection) -> Int? {
-        return sections.firstIndex(of: section)
+        return sections.firstIndex(where: { (arg) -> Bool in
+            let (_, currentSection) = arg
+            return currentSection == section
+        })
     }
     
     //MARK: - Header
     public func getHeader(index: Int) -> BaseHeader? {
-        return getSection(index: index).getHeader()
+        return getSection(index: index).section.getHeader()
     }
     
     //MARK: - Footer
     public func getFooter(index: Int) -> BaseFooter? {
-        return getSection(index: index).getFooter()
+        return getSection(index: index).section.getFooter()
     }
     
     //MARK: - Row
     public func getRow(indexPath: IndexPath) -> IdentifiedTableRow {
-        return getSection(index: indexPath.section).getRow(at: indexPath.row)
+        return getSection(index: indexPath.section).section.getRow(at: indexPath.row)
     }
     
     public func getRow(by id: String) -> IdentifiedTableRow? {
-        for section in sections {
-            if let row = section.getRow(by: id) {
+        for identifiedSection in sections {
+            if let row = identifiedSection.section.getRow(by: id) {
                 return row
             }
         }
@@ -97,8 +107,8 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     
     // MARK: - Queue
     func getQueuedRow(_ id: String) -> IdentifiedTableRow? {
-        for section in sections {
-            if let row = getQueuedRow(id, in: section) {
+        for identifiedSection in sections {
+            if let row = getQueuedRow(id, in: identifiedSection.section) {
                 return row
             }
         }
@@ -162,36 +172,50 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
                 print("[EasyList] UPDATE")
             }
             isUpdating = true
-            if #available(iOS 11.0, *) {
-                if let update = updateQueue.dequeue() {
-                    tableView?.performBatchUpdates({
+            if let update = updateQueue.dequeue() {
+                if update.animation != nil {
+                    if #available(iOS 11.0, *) {
+                        tableView?.performBatchUpdates({
+                            if verbose {
+                                print("[EasyList] PROCESSING : \(update)")
+                            }
+                            doUpdate(update)
+                        }, completion: { (finished) in
+                            self.isUpdating = false
+                            if self.updateQueue.count() != 0 {
+                                self.performUpdates()
+                            }
+                        })
+                    } else {
+                        CATransaction.begin()
+                        CATransaction.setCompletionBlock {
+                            self.isUpdating = false
+                            if self.updateQueue.count() != 0 {
+                                self.performUpdates()
+                            }
+                        }
+                        tableView?.beginUpdates()
                         if verbose {
                             print("[EasyList] PROCESSING : \(update)")
                         }
                         doUpdate(update)
-                    }, completion: { (finished) in
-                        self.isUpdating = false
-                        if self.updateQueue.count() != 0 {
-                            self.performUpdates()
-                        }
-                    })
-                }
-            } else {
-                if let update = updateQueue.dequeue() {
-                    CATransaction.begin()
-                    CATransaction.setCompletionBlock {
-                        self.isUpdating = false
-                        if self.updateQueue.count() != 0 {
-                            self.performUpdates()
+                        tableView?.endUpdates()
+                        CATransaction.commit()
+                    }
+                } else {
+                    if let indexPath = getIndexPath(for: update) {
+                        switch update.kind {
+                        case .insert:
+                            guard let row = update.row else {
+                                return
+                            }
+                            update.section.insert(id: update.id, row: row, index: indexPath.row)
+                        case .delete:
+                            update.section.removeRow(index: indexPath.row)
                         }
                     }
-                    tableView?.beginUpdates()
-                    if verbose {
-                        print("[EasyList] PROCESSING : \(update)")
-                    }
-                    doUpdate(update)
-                    tableView?.endUpdates()
-                    CATransaction.commit()
+                    tableView?.reloadData()
+                    self.isUpdating = false
                 }
             }
         } else {

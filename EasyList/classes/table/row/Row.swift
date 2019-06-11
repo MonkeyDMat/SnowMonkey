@@ -13,7 +13,6 @@ import UIKit
     @objc optional func setSection(section: BaseTableSection)
 }
 
-
 public typealias IdentifiedTableRow = (id: String?, row: RowType)
 
 open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutProvider, RowEditionProvider, RowSelectionProvider {

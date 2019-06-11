@@ -8,6 +8,8 @@
 
 import UIKit
 
+public typealias IdentifiedTableSection = (id: String?, section: BaseTableSection)
+
 // Section implements RowLayout, RowEdition, RowSelection so it can provides default values for the rows it contains
 // Which allows for example to define the height of all rows in that section, without having to specify height for each rows individually
 
@@ -92,28 +94,6 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     
     func removeRow(index: Int) {
         rows.remove(at: index)
-    }
-    
-    @discardableResult
-    public func deleteAllRow(where predicate: ((String?, RowType)) -> Bool) -> BaseTableSection {
-        
-        if _verbose {
-            print("[EasyList] DeleteAllRows where")
-        }
-        
-        rows.removeAll(where: predicate)
-        return self
-    }
-    
-    @discardableResult
-    public func deleteAllRows() -> BaseTableSection {
-        
-        if _verbose {
-            print("[EasyList] DeleteAllRows")
-        }
-        
-        rows.removeAll()
-        return self
     }
     
     // MARK: - HEADER

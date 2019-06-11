@@ -20,9 +20,9 @@ extension TableSource: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if verbose {
-            print("[EasyList] DataSource numberOfRowsInSection \(getSection(index: section).rowCount())")
+            print("[EasyList] DataSource numberOfRowsInSection \(getSection(index: section).section.rowCount())")
         }
-        return getSection(index: section).rowCount()
+        return getSection(index: section).section.rowCount()
     }
     
     //MARK: - Header

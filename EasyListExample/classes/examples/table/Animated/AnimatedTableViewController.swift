@@ -35,7 +35,8 @@ class AnimatedTableViewController: UIViewController {
         source.addSection(section1)
         
         header.setup(text: "Custom Header\nThis is a custom header", actionButtonTitle: "Refresh", action: {
-            section1.deleteAllRows()
+            // To replace when deleteRows will be reimplemented
+            //section1.deleteAllRows()
             self.source.reloadData()
             self.refreshSection(at: 0)
         })
@@ -47,7 +48,7 @@ class AnimatedTableViewController: UIViewController {
         for i in 1...5 {
             let randomDuration = Double.random(in: Range<Double>(uncheckedBounds: (lower: 1.0, upper: 10.0)))
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(randomDuration * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
-                self.source.getSection(index: index).addRow(IndexedRow(index: i), after: { (currentRow, newRow) -> Bool in
+                self.source.getSection(index: index).section.addRow(IndexedRow(index: i), after: { (currentRow, newRow) -> Bool in
                                     guard let currentIndexedRow = currentRow.row as? IndexedRow else {
                                         return false
                                     }

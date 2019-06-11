@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         
         // Table
         let tableSection = TableSection(header: NativeHeader(title: "Table"), footer: nil)
-        source.addSection(tableSection)
+        source.addSection(tableSection, id: "table")
         
         // Native
         let native = NativeRow(text: "Native")
@@ -87,7 +87,7 @@ class ViewController: UIViewController {
         
         // Collection
         let collectionSection = TableSection(header: NativeHeader(title: "Collection"), footer: nil)
-        source.addSection(collectionSection)
+        source.addSection(collectionSection, id: "collection")
         
         // Native
         let nativeCollection = NativeRow(text: "Native Collection")
