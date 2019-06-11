@@ -16,14 +16,13 @@ enum SourceUpdateKind {
 struct SourceUpdate: CustomStringConvertible {
     var kind: SourceUpdateKind
     var section: BaseTableSection
-    var id: String?
-    var row:RowType?
+    var row:IdentifiedTableRow?
     var index: Int?
     var after: ((IdentifiedTableRow, RowType) -> Bool)?
     var animation: UITableView.RowAnimation?
     
     var description: String {
-        return "\(kind) - \(id) - \(row) at \(index) using \(animation)"
+        return "\(kind) - \(row?.id) - \(row?.row) at \(index) using \(animation)"
     }
 }
 
@@ -117,9 +116,9 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     
     func getQueuedRow(_ id: String, in section: BaseTableSection) -> IdentifiedTableRow? {
         if let update = updateQueue.toArray().first(where: { (update) -> Bool in
-            return update.section === section && update.id == id
+            return update.section === section && update.row?.id == id
         }) {
-            return (id: update.id, row: update.row) as? IdentifiedTableRow
+            return update.row
         }
         return nil
     }
@@ -129,8 +128,7 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
         
         updateQueue.enqueue(element: SourceUpdate(kind: .insert,
                                                   section: section,
-                                                  id: id,
-                                                  row: row,
+                                                  row: (id: id, row: row),
                                                   index: index,
                                                   after: after,
                                                   animation: animation))
@@ -155,7 +153,6 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
         
         updateQueue.enqueue(element: SourceUpdate(kind: .delete,
                                                   section: section,
-                                                  id: nil,
                                                   row: nil,
                                                   index: index,
                                                   after: nil,
@@ -209,7 +206,7 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
                             guard let row = update.row else {
                                 return
                             }
-                            update.section.insert(id: update.id, row: row, index: indexPath.row)
+                            update.section.insert(row: row, index: indexPath.row)
                         case .delete:
                             update.section.removeRow(index: indexPath.row)
                         }
@@ -233,7 +230,7 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
                 guard let row = update.row else {
                     return
                 }
-                update.section.insert(id: update.id, row: row, index: indexPath.row)
+                update.section.insert(row: row, index: indexPath.row)
                 tableView?.insertRows(at: [indexPath], with: update.animation ?? .none)
             case .delete:
                 update.section.removeRow(index: indexPath.row)
@@ -249,11 +246,11 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
         
         if let predicate = update.after {
             var rowIndex = 0
-            guard let row = update.row else {
+            guard let identifiedRow = update.row else {
                     return nil
             }
             for (currentIndex, currentRow) in update.section.rows.enumerated() {
-                if predicate(currentRow, row) {
+                if predicate(currentRow, identifiedRow.row) {
                     rowIndex = max(rowIndex, currentIndex + 1)
                 }
             }

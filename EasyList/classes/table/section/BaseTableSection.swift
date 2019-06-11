@@ -60,6 +60,10 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
         rows.insert((id, row), at: index)
     }
     
+    func insert(row: IdentifiedTableRow, index: Int) {
+        rows.insert(row, at: index)
+    }
+    
     // MARK: - UPDATE ROW
     func updateRow(_ updateBlock: () -> Void) {
         source?.updateRow(updateBlock)
