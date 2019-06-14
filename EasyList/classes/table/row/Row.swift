@@ -13,7 +13,24 @@ import UIKit
     @objc optional func setSection(section: BaseTableSection)
 }
 
-public typealias IdentifiedTableRow = (id: String?, row: RowType)
+public struct IndexedTableRow {
+    var index: IndexPath?
+    var identifiedRow: IdentifiedTableRow?
+    
+    init(index: IndexPath?, identifiedRow: IdentifiedTableRow?) {
+        self.index = index
+        self.identifiedRow = identifiedRow
+    }
+    
+    init(row: RowType, index: IndexPath? = nil, id: String? = nil) {
+        self = IndexedTableRow(index: index, identifiedRow: IdentifiedTableRow(id: id, row: row))
+    }
+}
+
+public struct IdentifiedTableRow {
+    var id: String?
+    var row: RowType
+}
 
 open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutProvider, RowEditionProvider, RowSelectionProvider {
     

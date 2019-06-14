@@ -29,35 +29,69 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     
     // MARK: - ADD ROW
     @discardableResult
-    public func addRow(_ row: RowType, at index: Int? = nil, id: String? = nil, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
-        row.setSection?(section: self)
-        let rowIndex = index
-        
-        if _verbose {
-            print("[EasyList] AddRow \(row) id \(id ?? "") at \(rowIndex)")
+    public func addRow(_ row: RowType, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
+        return self.addRows([IndexedTableRow(row: row)], animation: animation)
+    }
+    
+    @discardableResult
+    public func addRows(_ rows: [RowType], animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
+        return self.addRows(rows.map({ (row) -> IndexedTableRow in
+            return IndexedTableRow(row: row)
+        }), animation: animation)
+    }
+    
+    @discardableResult
+    public func addRow(_ row: IndexedTableRow, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
+        return self.addRows([row], animation: animation)
+    }
+    
+    @discardableResult
+    public func addRows(_ rows: [IndexedTableRow], animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
+        rows.forEach { (row) in
+            row.identifiedRow?.row.setSection?(section: self)
         }
         
-        source?.addRow(row, id: id, at: rowIndex, after: nil, in: self, animation: animation)
+        source?.addRows(rows, after: nil, in: self, animation: animation)
         return self
     }
     
     @discardableResult
-    public func addRow<RowTypeToInsert: RowType>(_ row: RowTypeToInsert,
-                                                 after predicate: @escaping (IdentifiedTableRow, RowType) -> Bool,
-                                                 id: String? = nil,
-                                                 animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
-        row.setSection?(section: self)
-        
-        if _verbose {
-            print("[EasyList] AddRow \(row) id \(id ?? ""))")
+    public func addRow(_ row: RowType,
+                       after predicate: @escaping (RowType, RowType) -> Bool,
+                       animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
+        return self.addRows([IndexedTableRow(row: row)], after: predicate, animation: animation)
+    }
+    
+    @discardableResult
+    public func addRows(_ rows: [RowType],
+                       after predicate: @escaping (RowType, RowType) -> Bool,
+                       animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
+        return self.addRows(rows.map({ (row) -> IndexedTableRow in
+            return IndexedTableRow(row: row)
+        }), after: predicate, animation: animation)
+    }
+    
+    @discardableResult
+    public func addRow(_ row: IndexedTableRow,
+                       after predicate: @escaping (RowType, RowType) -> Bool,
+                       animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
+        return self.addRows([row], after: predicate, animation: animation)
+    }
+    
+    @discardableResult
+    public func addRows(_ rows: [IndexedTableRow],
+                        after predicate: @escaping (RowType, RowType) -> Bool,
+                        animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
+        rows.forEach { (row) in
+            row.identifiedRow?.row.setSection?(section: self)
         }
         
-        source?.addRow(row, id: id, at: nil, after: predicate, in: self, animation: animation)
+        source?.addRows(rows, after: predicate, in: self, animation: animation)
         return self
     }
     
     func insert(id: String?, row: RowType, index: Int) {
-        rows.insert((id, row), at: index)
+        rows.insert(IdentifiedTableRow(id: id, row: row), at: index)
     }
     
     func insert(row: IdentifiedTableRow, index: Int) {
@@ -72,27 +106,28 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     // MARK: - DELETE ROW
     @discardableResult
     public func deleteRow(at index: Int, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
+        return self.deleteRows(at: [index], animation: animation)
+    }
+    
+    @discardableResult
+    public func deleteRows(at indexes: [Int], animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
         
         if _verbose {
-            print("[EasyList] DeleteRow at \(index)")
+            print("[EasyList] DeleteRow at \(indexes)")
         }
         
-        source?.deleteRow(at: index, in: self, animation: animation)
+        source?.deleteRows(at: indexes, in: self, animation: animation)
         return self
     }
     
     @discardableResult
-    public func deleteRow(with id: String, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
-        guard let identifiedRow = getRow(by: id),
-            let index = getRowIndex(of: identifiedRow.row)else {
-            return self
+    public func deleteAllRows(animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
+        
+        let indexes = rows.enumerated().map { (index, _) -> Int in
+            return index
         }
         
-        if _verbose {
-            print("[EasyList] DeleteRow \(identifiedRow.id ?? "") at \(index)")
-        }
-        
-        source?.deleteRow(at: index, in: self, animation: animation)
+        source?.deleteRows(at: indexes, in: self, animation: animation)
         return self
     }
     
@@ -128,8 +163,8 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     }
     
     func getRowIndex(of row: RowType) -> Int? {
-        return rows.firstIndex(where: { (_, currentRow) -> Bool in
-            return currentRow === row
+        return rows.firstIndex(where: { (currentRow) -> Bool in
+            return currentRow.row === row
         })
     }
     

@@ -35,7 +35,7 @@ class ViewController: UIViewController {
         native.setDidSelect { (_) in
             self.show(sample: .native)
         }
-        tableSection.addRow(native)
+        //tableSection.addRow(native)
         
         
         // Custom
@@ -43,7 +43,7 @@ class ViewController: UIViewController {
         custom.setDidSelect { (_) in
             self.show(sample: .custom)
         }
-        tableSection.addRow(custom)
+        //tableSection.addRow(custom)
         
         
         // CustomData
@@ -51,7 +51,7 @@ class ViewController: UIViewController {
         customData.setDidSelect { (_) in
             self.show(sample: .customData)
         }
-        tableSection.addRow(customData)
+        //tableSection.addRow(customData)
         
         
         // Configuration
@@ -59,7 +59,7 @@ class ViewController: UIViewController {
         configuration.setDidSelect { (_) in
             self.show(sample: .configuration)
         }
-        tableSection.addRow(configuration)
+        //tableSection.addRow(configuration)
         
         
         // Editable
@@ -67,7 +67,7 @@ class ViewController: UIViewController {
         editable.setDidSelect { (_) in
             self.show(sample: .editable)
         }
-        tableSection.addRow(editable)
+        //tableSection.addRow(editable)
         
         
         // Animated
@@ -75,7 +75,7 @@ class ViewController: UIViewController {
         animated.setDidSelect { (_) in
             self.show(sample: .animated)
         }
-        tableSection.addRow(animated)
+        //tableSection.addRow(animated)
         
         
         // Animated
@@ -83,7 +83,12 @@ class ViewController: UIViewController {
         grouped.setDidSelect { (_) in
             self.show(sample: .grouped)
         }
-        tableSection.addRow(grouped)
+        //tableSection.addRow(grouped)
+        
+        tableSection.addRows([native, custom, customData, configuration])
+        tableSection.addRow(editable)
+        tableSection.addRows([animated, grouped])
+        
         
         // Collection
         let collectionSection = TableSection(header: NativeHeader(title: "Collection"), footer: nil)
