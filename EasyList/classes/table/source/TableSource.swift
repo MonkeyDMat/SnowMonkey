@@ -13,11 +13,13 @@ enum SourceUpdateKind {
     case delete
 }
 
+public typealias AfterPredicate = ((IdentifiedTableRow, IdentifiedTableRow) -> Bool)
+
 struct SourceUpdate {
     var kind: SourceUpdateKind
     var section: BaseTableSection
     var rows:[IndexedTableRow]?
-    var after: ((RowType, RowType) -> Bool)?
+    var after: AfterPredicate?
     var animation: UITableView.RowAnimation?
 }
 
@@ -123,7 +125,7 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     }
     
     @discardableResult
-    func addRows(_ rows: [IndexedTableRow], after: ((RowType, RowType) -> Bool)?, in section: BaseTableSection, animation: UITableView.RowAnimation? = nil) -> TableSource {
+    func addRows(_ rows: [IndexedTableRow], after: AfterPredicate?, in section: BaseTableSection, animation: UITableView.RowAnimation? = nil) -> TableSource {
         
         updateQueue.enqueue(element: SourceUpdate(kind: .insert,
                                                   section: section,
@@ -318,9 +320,9 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
             
             for (index, row) in rows.enumerated() {
                 
-                if let row = row.identifiedRow?.row {
+                if let row = row.identifiedRow {
                     for (currentIndex, currentRow) in update.section.rows.enumerated() {
-                        if predicate(currentRow.row, row) {
+                        if predicate(currentRow, row) {
                             rowIndex = max(rowIndex, currentIndex + 1)
                         }
                     }

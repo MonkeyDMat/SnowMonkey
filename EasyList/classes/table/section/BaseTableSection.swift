@@ -57,7 +57,7 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     
     @discardableResult
     public func addRow(_ row: RowType,
-                       after predicate: @escaping (RowType, RowType) -> Bool,
+                       after predicate: @escaping AfterPredicate,
                        id: String? = nil,
                        animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
         return self.addRows([IndexedTableRow(row: row, id: id)], after: predicate, animation: animation)
@@ -65,7 +65,7 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     
     @discardableResult
     public func addRows(_ rows: [RowType],
-                       after predicate: @escaping (RowType, RowType) -> Bool,
+                       after predicate: @escaping AfterPredicate,
                        animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
         return self.addRows(rows.map({ (row) -> IndexedTableRow in
             return IndexedTableRow(row: row)
@@ -74,14 +74,14 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     
     @discardableResult
     public func addRow(_ indexedRow: IndexedTableRow,
-                       after predicate: @escaping (RowType, RowType) -> Bool,
+                       after predicate: @escaping AfterPredicate,
                        animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
         return self.addRows([indexedRow], after: predicate, animation: animation)
     }
     
     @discardableResult
     public func addRows(_ indexedRows: [IndexedTableRow],
-                        after predicate: @escaping (RowType, RowType) -> Bool,
+                        after predicate: @escaping AfterPredicate,
                         animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
         indexedRows.forEach { (row) in
             row.identifiedRow?.row.setSection?(section: self)
