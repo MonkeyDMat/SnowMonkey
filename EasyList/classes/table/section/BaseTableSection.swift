@@ -29,8 +29,8 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     
     // MARK: - ADD ROW
     @discardableResult
-    public func addRow(_ row: RowType, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
-        return self.addRows([IndexedTableRow(row: row)], animation: animation)
+    public func addRow(_ row: RowType, id: String? = nil, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
+        return self.addRows([IndexedTableRow(row: row, id: id)], animation: animation)
     }
     
     @discardableResult
@@ -58,8 +58,9 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     @discardableResult
     public func addRow(_ row: RowType,
                        after predicate: @escaping (RowType, RowType) -> Bool,
+                       id: String? = nil,
                        animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
-        return self.addRows([IndexedTableRow(row: row)], after: predicate, animation: animation)
+        return self.addRows([IndexedTableRow(row: row, id: id)], after: predicate, animation: animation)
     }
     
     @discardableResult
@@ -72,21 +73,21 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     }
     
     @discardableResult
-    public func addRow(_ row: IndexedTableRow,
+    public func addRow(_ indexedRow: IndexedTableRow,
                        after predicate: @escaping (RowType, RowType) -> Bool,
                        animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
-        return self.addRows([row], after: predicate, animation: animation)
+        return self.addRows([indexedRow], after: predicate, animation: animation)
     }
     
     @discardableResult
-    public func addRows(_ rows: [IndexedTableRow],
+    public func addRows(_ indexedRows: [IndexedTableRow],
                         after predicate: @escaping (RowType, RowType) -> Bool,
                         animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
-        rows.forEach { (row) in
+        indexedRows.forEach { (row) in
             row.identifiedRow?.row.setSection?(section: self)
         }
         
-        source?.addRows(rows, after: predicate, in: self, animation: animation)
+        source?.addRows(indexedRows, after: predicate, in: self, animation: animation)
         return self
     }
     
@@ -105,8 +106,44 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     
     // MARK: - DELETE ROW
     @discardableResult
+    public func deleteRow(with id: String?, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
+        guard let index = self.getRowIndex(with: id) else {
+            if _verbose {
+                print("[EasyList] DeleteRow id not found \(String(describing: id))")
+            }
+            return self
+        }
+        if _verbose {
+            print("[EasyList] DeleteRow id \(String(describing: id))")
+        }
+        return self.deleteRows(at: [index], animation: animation)
+    }
+    
+    @discardableResult
     public func deleteRow(at index: Int, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
         return self.deleteRows(at: [index], animation: animation)
+    }
+    
+    @discardableResult
+    public func deleteRows(with ids: [String], animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
+        
+        if _verbose {
+            print("[EasyList] DeleteRow with \(ids)")
+        }
+        
+        var indexes = [Int]()
+        for id in ids {
+            if let index = getRowIndex(with: id) {
+                indexes.append(index)
+            } else {
+                if _verbose {
+                    print("[EasyList] DeleteRow id not found \(String(describing: id))")
+                }
+            }
+        }
+        
+        source?.deleteRows(at: indexes, in: self, animation: animation)
+        return self
     }
     
     @discardableResult
@@ -165,6 +202,12 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     func getRowIndex(of row: RowType) -> Int? {
         return rows.firstIndex(where: { (currentRow) -> Bool in
             return currentRow.row === row
+        })
+    }
+    
+    func getRowIndex(with id: String?) -> Int? {
+        return rows.firstIndex(where: { (currentRow) -> Bool in
+            return currentRow.id == id
         })
     }
     

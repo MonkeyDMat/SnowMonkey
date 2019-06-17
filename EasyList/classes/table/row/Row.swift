@@ -14,22 +14,27 @@ import UIKit
 }
 
 public struct IndexedTableRow {
-    var index: IndexPath?
-    var identifiedRow: IdentifiedTableRow?
+    public var index: IndexPath?
+    public var identifiedRow: IdentifiedTableRow?
     
-    init(index: IndexPath?, identifiedRow: IdentifiedTableRow?) {
+    public init(index: IndexPath?, identifiedRow: IdentifiedTableRow?) {
         self.index = index
         self.identifiedRow = identifiedRow
     }
     
-    init(row: RowType, index: IndexPath? = nil, id: String? = nil) {
+    public init(row: RowType, index: IndexPath? = nil, id: String? = nil) {
         self = IndexedTableRow(index: index, identifiedRow: IdentifiedTableRow(id: id, row: row))
     }
 }
 
 public struct IdentifiedTableRow {
-    var id: String?
-    var row: RowType
+    public var id: String?
+    public var row: RowType
+    
+    public init(id: String?, row: RowType) {
+        self.id = id
+        self.row = row
+    }
 }
 
 open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutProvider, RowEditionProvider, RowSelectionProvider {

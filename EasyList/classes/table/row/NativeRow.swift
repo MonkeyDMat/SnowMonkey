@@ -12,6 +12,12 @@ public struct TextData {
     public var text: String
     public var detail: String?
     public var style: UITableViewCell.CellStyle
+    
+    public init(text: String, detail: String?, style: UITableViewCell.CellStyle) {
+        self.text = text
+        self.detail = detail
+        self.style = style
+    }
 }
 
 public class NativeRow: Row<TextData, NativeCell> {
