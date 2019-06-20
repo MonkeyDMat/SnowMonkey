@@ -274,7 +274,12 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
                         }
                     }
                     tableView?.reloadData()
-                    self.isUpdating = false
+                    
+                    if self.updateQueue.count() != 0 {
+                        self.performUpdates()
+                    } else {
+                        self.isUpdating = false
+                    }
                 }
             }
         } else {
