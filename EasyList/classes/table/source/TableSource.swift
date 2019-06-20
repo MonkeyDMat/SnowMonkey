@@ -257,6 +257,9 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
                     guard let rows = update.rows else {
                         return
                     }
+                    if verbose {
+                        print("[EasyList] PROCESSING : \(update)")
+                    }
                     switch update.kind {
                     case .insert:
                         let indexPaths = getIndexPath(for: update)
