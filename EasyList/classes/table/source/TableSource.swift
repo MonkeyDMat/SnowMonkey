@@ -219,11 +219,11 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     
     private func performUpdates() {
         if !isUpdating {
+            if verbose {
+                print("[EasyList] UPDATE")
+            }
+            isUpdating = true
             if let update = updateQueue.dequeue() {
-                if verbose {
-                    print("[EasyList] UPDATE")
-                }
-                isUpdating = true
                 if update.animation != nil {
                     if #available(iOS 11.0, *) {
                         tableView?.performBatchUpdates({
@@ -285,6 +285,7 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
                 }
             }
         } else {
+            isUpdating = false
             if verbose {
                 print("[EasyList] ALREADY UPDATING")
             }
