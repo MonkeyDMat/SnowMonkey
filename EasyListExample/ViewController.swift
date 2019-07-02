@@ -88,7 +88,11 @@ class ViewController: UIViewController {
         tableSection.addRows([native, custom, customData, configuration])
         tableSection.addRow(editable)
         tableSection.addRows([animated, grouped])
+        tableSection.addRow(editable, id: "Test")
         
+        let index = tableSection.getRowIndex(with: "Test")
+        
+        source.getRow(by: "Test")?.row
         
         // Collection
         let collectionSection = TableSection(header: NativeHeader(title: "Collection"), footer: nil)
