@@ -38,7 +38,7 @@ open class CollectionSource: NSObject, CollectionItemLayout, CollectionItemLayou
         return section
     }
     
-    func getSection(index: Int) -> BaseCollectionSection {
+    func getSection(index: Int) -> BaseCollectionSection? {
         return sections[index]
     }
     
@@ -47,8 +47,8 @@ open class CollectionSource: NSObject, CollectionItemLayout, CollectionItemLayou
     }
     
     // MARK: - Item
-    func getItem(indexPath: IndexPath) -> CollectionItemType {
-        return getSection(index: indexPath.section).getItem(at: indexPath.row)
+    func getItem(indexPath: IndexPath) -> CollectionItemType? {
+        return getSection(index: indexPath.section)?.getItem(at: indexPath.row)
     }
     
     @discardableResult

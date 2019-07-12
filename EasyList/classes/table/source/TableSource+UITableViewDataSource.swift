@@ -20,9 +20,9 @@ extension TableSource: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if verbose {
-            print("[EasyList] DataSource numberOfRowsInSection \(getSection(index: section).section.rowCount())")
+            print("[EasyList] DataSource numberOfRowsInSection \(getSection(index: section)?.section.rowCount())")
         }
-        return getSection(index: section).section.rowCount()
+        return getSection(index: section)?.section.rowCount() ?? 0
     }
     
     //MARK: - Header
@@ -51,20 +51,20 @@ extension TableSource: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identifiedRow = getRow(indexPath: indexPath)
         
-        let cell = identifiedRow.row.getCell(tableView: tableView)
-        cell.selectionStyle = identifiedRow.row.selectionStyle?() ?? cell.selectionStyle
+        let cell = identifiedRow?.row.getCell(tableView: tableView)
+        cell?.selectionStyle = identifiedRow?.row.selectionStyle?() ?? .default
         
         if verbose {
             print("[EasyList] DataSource cellForRowAt \(indexPath) - \(cell)")
         }
         
-        return cell
+        return cell ?? UITableViewCell()
     }
     
     //MARK: - Edit row
     public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let identifiedRow = getRow(indexPath: indexPath)
-        return identifiedRow.row.isEditable?() ?? false
+        return identifiedRow?.row.isEditable?() ?? false
     }
     
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

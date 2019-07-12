@@ -183,8 +183,8 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     }
     
     // MARK: - ROWS
-    public func getRow(at index: Int) -> IdentifiedTableRow {
-        return rows[index]
+    public func getRow(at index: Int) -> IdentifiedTableRow? {
+        return rows[safe: index]
     }
     
     public func getRow(by id: String) -> IdentifiedTableRow? {

@@ -9,6 +9,7 @@
 import UIKit
 
 @objc public protocol RowType: RowLayout, RowEdition, RowSelection {
+    func resetCell()
     func getCell(tableView: UITableView) -> UITableViewCell
     @objc optional func setSection(section: BaseTableSection)
 }
@@ -38,7 +39,7 @@ public struct IdentifiedTableRow {
 }
 
 open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutProvider, RowEditionProvider, RowSelectionProvider {
-    
+
     public typealias ReturnType = Row<SourceType, CellType>
     
     var data: SourceType?
@@ -69,29 +70,34 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
     }
     
     open func updateRow(data: SourceType) {
-        if cell != nil {
-            section?.updateRow({
-                self.data = data
-                cellPresenter?.configureCell(cell: cell!, source: data)
-            })
-        }
+        section?.updateRow({ [weak self] in
+            self?.data = data
+            if let cell = self?.cell {
+                cellPresenter?.configureCell(cell: cell, source: data)
+            }
+        })
     }
     
     //MARK: - RowType
+    public func resetCell() {
+        cell = nil
+    }
+    
     public func getCell(tableView: UITableView) -> UITableViewCell {
-        if let cellIdentifier = cellIdentifier {
-            tableView.register(CellType.self, forCellReuseIdentifier: cellIdentifier)
-            cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CellType
-        } else {
-            cell = CellType(frame: CGRect.zero)
+        if cell == nil {
+            if let cellIdentifier = cellIdentifier {
+                tableView.register(CellType.self, forCellReuseIdentifier: cellIdentifier)
+                cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CellType
+            } else {
+                cell = CellType(frame: CGRect.zero)
+            }
+            
         }
-        
         cell?.layoutSubviews()
         
-        if let data = data, cell != nil {
-            cellPresenter?.configureCell(cell: cell!, source: data)
+        if let data = data, let cell = cell {
+            cellPresenter?.configureCell(cell: cell, source: data)
         }
-        
         return cell ?? UITableViewCell()
     }
     
