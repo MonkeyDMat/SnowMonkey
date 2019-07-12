@@ -199,13 +199,13 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
         return row
     }
     
-    func getRowIndex(of row: RowType) -> Int? {
+    public func getRowIndex(of row: RowType) -> Int? {
         return rows.firstIndex(where: { (currentRow) -> Bool in
             return currentRow.row === row
         })
     }
     
-    func getRowIndex(with id: String?) -> Int? {
+    public func getRowIndex(with id: String?) -> Int? {
         return rows.firstIndex(where: { (currentRow) -> Bool in
             return currentRow.id == id
         })
