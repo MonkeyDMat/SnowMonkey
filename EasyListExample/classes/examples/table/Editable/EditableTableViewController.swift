@@ -58,6 +58,6 @@ class EditableTableViewController: UIViewController {
 extension EditableTableViewController: TableSourceDelegate {
     
     func commitEditingStyle(editingStyle: UITableViewCell.EditingStyle, at index: IndexPath, for: UITableView) {
-        source.getSection(index: index.section).section.deleteRow(at: index.row, animation: .left)
+        source.getSection(index: index.section)?.section.deleteRow(at: index.row, animation: .left)
     }
 }

@@ -57,8 +57,8 @@ open class BaseCollectionSection: NSObject, CollectionItemLayoutProvider {
         return self
     }
     
-    public func getItem(at index: Int) -> CollectionItemType {
-        return items[index]
+    public func getItem(at index: Int) -> CollectionItemType? {
+        return items[safe: index]
     }
     
     internal func itemCount() -> Int {

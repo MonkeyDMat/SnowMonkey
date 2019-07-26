@@ -65,8 +65,8 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
         })
     }
     
-    public func getSection(index: Int) -> IdentifiedTableSection {
-        return sections[index]
+    public func getSection(index: Int) -> IdentifiedTableSection? {
+        return sections[safe: index]
     }
     
     func getIndex(of section: BaseTableSection) -> Int? {
@@ -78,17 +78,17 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     
     //MARK: - Header
     public func getHeader(index: Int) -> BaseHeader? {
-        return getSection(index: index).section.getHeader()
+        return getSection(index: index)?.section.getHeader()
     }
     
     //MARK: - Footer
     public func getFooter(index: Int) -> BaseFooter? {
-        return getSection(index: index).section.getFooter()
+        return getSection(index: index)?.section.getFooter()
     }
     
     //MARK: - Row
-    public func getRow(indexPath: IndexPath) -> IdentifiedTableRow {
-        return getSection(index: indexPath.section).section.getRow(at: indexPath.row)
+    public func getRow(indexPath: IndexPath) -> IdentifiedTableRow? {
+        return getSection(index: indexPath.section)?.section.getRow(at: indexPath.row)
     }
     
     public func getRow(by id: String) -> IdentifiedTableRow? {

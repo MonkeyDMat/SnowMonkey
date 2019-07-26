@@ -10,18 +10,18 @@ import UIKit
 
 extension CollectionSource: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("[EasyList] ITEMS IN SECTION \(section) : \(getSection(index: section).itemCount())")
-        return getSection(index: section).itemCount()
+        print("[EasyList] ITEMS IN SECTION \(section) : \(getSection(index: section)?.itemCount())")
+        return getSection(index: section)?.itemCount() ?? 0
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = getItem(indexPath: indexPath)
         
-        let cell = item.getCell(collectionView: collectionView)
+        let cell = item?.getCell(collectionView: collectionView)
         
         print("[EasyList]CELL FOR ITEM : \(cell)")
         
-        return cell
+        return cell ?? UICollectionViewCell()
     }
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
