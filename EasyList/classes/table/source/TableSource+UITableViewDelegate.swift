@@ -91,12 +91,15 @@ extension TableSource: UITableViewDelegate {
     
     //MARK: - Row render delegate
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        self.getRow(indexPath: indexPath)?.row.updateCell(cell: cell)
         delegate?.willDisplayRow?(tableView, willDisplay: cell, forRowAt: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         delegate?.didEndDisplayRow?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
-        self.getRow(indexPath: indexPath)?.row.resetCell()
+        if tableView.indexPathsForVisibleRows?.contains(indexPath) == false {
+            self.getRow(indexPath: indexPath)?.row.resetCell()
+        }
     }
     
     //MARK: - Accessory

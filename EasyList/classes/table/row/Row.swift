@@ -10,6 +10,7 @@ import UIKit
 
 @objc public protocol RowType: RowLayout, RowEdition, RowSelection {
     func resetCell()
+    func updateCell(cell: UITableViewCell)
     func getCell(tableView: UITableView) -> UITableViewCell
     @objc optional func setSection(section: BaseTableSection)
 }
@@ -81,6 +82,12 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
     //MARK: - RowType
     public func resetCell() {
         cell = nil
+    }
+    
+    public func updateCell(cell: UITableViewCell) {
+        if let cell = cell as? CellType, let data = self.data {
+            cellPresenter?.configureCell(cell: cell, source: data)
+        }
     }
     
     public func getCell(tableView: UITableView) -> UITableViewCell {
