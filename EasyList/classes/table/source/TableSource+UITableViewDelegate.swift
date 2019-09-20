@@ -58,7 +58,7 @@ extension TableSource: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         let identifiedRow = getRow(indexPath: indexPath)
-        return identifiedRow?.row.estimatedRowHeight?() ?? CGFloat(40)
+        return identifiedRow?.row.estimatedRowHeight?() ?? cellHeights[indexPath] ?? UITableView.automaticDimension
     }
     
     //MARK: - Header rendering delegate
@@ -93,6 +93,7 @@ extension TableSource: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         self.getRow(indexPath: indexPath)?.row.updateCell(cell: cell)
         delegate?.willDisplayRow?(tableView, willDisplay: cell, forRowAt: indexPath)
+        cellHeights[indexPath] = cell.frame.size.height
     }
     
     public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -106,12 +107,7 @@ extension TableSource: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         delegate?.accessoryButtonTappedForRowWith?(tableView, accessoryButtonTappedForRowWith: indexPath)
     }
-    
-    
-    
-    
-    
-    
+
     //MARK: - Highlight
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         return delegate?.shouldHighlightRowAt?(tableView, shouldHighlightRowAt: indexPath) ?? true

@@ -36,6 +36,8 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     private var updateQueue = Queue<SourceUpdate>()
     private var isUpdating: Bool = false
     
+    var cellHeights: [IndexPath: CGFloat] = [:]
+    
     public init(sections: [IdentifiedTableSection] = [], tableView: TableView, delegate: TableSourceDelegate? = nil) {
         self.sections = sections
         self.tableView = tableView
