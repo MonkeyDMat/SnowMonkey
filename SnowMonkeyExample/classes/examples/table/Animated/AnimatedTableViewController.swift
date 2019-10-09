@@ -50,10 +50,10 @@ class AnimatedTableViewController: UIViewController {
                 
                 let section = self.source.getSection(index: index)?.section
                 section?.addRow(IndexedRow(index: i), after: { (currentRow, newRow) -> Bool in
-                                    guard let currentIndexedRow = currentRow as? IndexedRow else {
+                                    guard let currentIndexedRow = currentRow.row as? IndexedRow else {
                                         return false
                                     }
-                    guard let index = (newRow as? IndexedRow)?.index else {
+                    guard let index = (newRow.row as? IndexedRow)?.index else {
                         return true
                     }
                     return currentIndexedRow.index < index

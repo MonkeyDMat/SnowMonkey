@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1010"
+   LastUpgradeVersion = "1020"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "15574EBD20F259FB00BC1089"
-               BuildableName = "EasyList.framework"
-               BlueprintName = "EasyList"
-               ReferencedContainer = "container:EasyList.xcodeproj">
+               BlueprintIdentifier = "1549307C22399BAE002693F1"
+               BuildableName = "SnowMonkeyExample.app"
+               BlueprintName = "SnowMonkeyExample"
+               ReferencedContainer = "container:SnowMonkey.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,24 +28,14 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "15574EC620F259FB00BC1089"
-               BuildableName = "EasyListTests.xctest"
-               BlueprintName = "EasyListTests"
-               ReferencedContainer = "container:EasyList.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "15574EBD20F259FB00BC1089"
-            BuildableName = "EasyList.framework"
-            BlueprintName = "EasyList"
-            ReferencedContainer = "container:EasyList.xcodeproj">
+            BlueprintIdentifier = "1549307C22399BAE002693F1"
+            BuildableName = "SnowMonkeyExample.app"
+            BlueprintName = "SnowMonkeyExample"
+            ReferencedContainer = "container:SnowMonkey.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -61,15 +51,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "15574EBD20F259FB00BC1089"
-            BuildableName = "EasyList.framework"
-            BlueprintName = "EasyList"
-            ReferencedContainer = "container:EasyList.xcodeproj">
+            BlueprintIdentifier = "1549307C22399BAE002693F1"
+            BuildableName = "SnowMonkeyExample.app"
+            BlueprintName = "SnowMonkeyExample"
+            ReferencedContainer = "container:SnowMonkey.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -79,15 +70,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "15574EBD20F259FB00BC1089"
-            BuildableName = "EasyList.framework"
-            BlueprintName = "EasyList"
-            ReferencedContainer = "container:EasyList.xcodeproj">
+            BlueprintIdentifier = "1549307C22399BAE002693F1"
+            BuildableName = "SnowMonkeyExample.app"
+            BlueprintName = "SnowMonkeyExample"
+            ReferencedContainer = "container:SnowMonkey.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
