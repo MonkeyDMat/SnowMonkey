@@ -168,6 +168,22 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
         return self
     }
     
+    @discardableResult
+    public func deleteRows(where shouldDelete: (RowType) -> Bool, animation: UITableView.RowAnimation? = nil) -> BaseTableSection {
+        
+        let indexes = rows.enumerated().filter { (arg0) -> Bool in
+            let (_, element) = arg0
+            return shouldDelete(element.row)
+        }.map { (arg0) -> Int in
+            let (index, _) = arg0
+            return index
+        }
+        
+        source?.deleteRows(at: indexes, in: self, animation: animation)
+        
+        return self
+    }
+    
     func removeRow(index: Int) {
         rows.remove(at: index)
     }
