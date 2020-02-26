@@ -22,8 +22,8 @@ public struct TextData {
 
 public class NativeRow: Row<TextData, NativeCell> {
     
-    public init(text: String, detail: String? = nil, style: UITableViewCell.CellStyle = .default) {
-        super.init(data: TextData(text: text, detail: detail, style: style), cellIdentifier: nil) { (cell, data) in
+    public init(id: String, text: String, detail: String? = nil, style: UITableViewCell.CellStyle = .default) {
+        super.init(id: id, data: TextData(text: text, detail: detail, style: style), cellIdentifier: nil) { (cell, data) in
             cell.textLabel?.text = data.text
             cell.detailTextLabel?.text = data.detail
         }

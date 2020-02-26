@@ -10,11 +10,11 @@ import Foundation
 
 public class IndexedRow: Row<Int, IndexedCell> {
     
-    var index: Int
+    var rowIndex: Int
     
     public init(index: Int) {
-        self.index = index
-        super.init(data: index, cellIdentifier: nil) { (cell, data) in
+        self.rowIndex = index
+        super.init(id: "Row\(rowIndex)", data: index, cellIdentifier: nil) { (cell, data) in
             cell.textLabel?.text = "CELL \(index)"
         }
     }

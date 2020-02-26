@@ -26,6 +26,7 @@ class EditableTableViewController: UIViewController {
             return .none
         }
         source.delegate = self
+        source.verbose = true
         
         let header = CustomHeaderWithAction()
         header.setup(text: "Custom Header\nThis is a custom header", actionButtonTitle: "Edit", action: {
@@ -48,7 +49,7 @@ class EditableTableViewController: UIViewController {
         }
         
         for i in 1...5 {
-            section.addRow(CustomRow(text: "Custom Row " + NSNumber(value: i).stringValue).setRowHeight({ (_) -> CGFloat in
+            section.addRow(CustomRow(id: "customRow\(i)", text: "Custom Row " + NSNumber(value: i).stringValue).setRowHeight({ (_) -> CGFloat in
                 return CGFloat(30 * i)
             }))
         }

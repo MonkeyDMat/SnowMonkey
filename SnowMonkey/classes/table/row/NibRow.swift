@@ -12,13 +12,13 @@ open class NibRow<SourceType, CellType: TableCell<SourceType>>: Row<SourceType, 
     
     var nibName: String?
     
-    public init(data: SourceType?, cellIdentifier: String?, nibName: String, cellPresenter: BaseCellPresenter<CellType, SourceType>?) {
-        super.init(data: data, cellIdentifier: cellIdentifier, cellPresenter: cellPresenter)
+    public init(id: String, data: SourceType?, cellIdentifier: String?, nibName: String, cellPresenter: BaseCellPresenter<CellType, SourceType>?) {
+        super.init(id: id, data: data, cellIdentifier: cellIdentifier, cellPresenter: cellPresenter)
         self.nibName = nibName
     }
     
-    public init(data: SourceType?, cellIdentifier: String?, nibName: String, configureCell: @escaping (CellType, SourceType) -> Void) {
-        super.init(data: data, cellIdentifier: cellIdentifier, configureCell: configureCell)
+    public init(id: String, data: SourceType?, cellIdentifier: String?, nibName: String, configureCell: @escaping (CellType, SourceType) -> Void) {
+        super.init(id: id, data: data, cellIdentifier: cellIdentifier, configureCell: configureCell)
         self.nibName = nibName
     }
     

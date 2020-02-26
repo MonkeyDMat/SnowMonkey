@@ -42,12 +42,12 @@ class ConfigurationTableViewController: UIViewController {
         }
         
         // Row height set for this row (ie: 40)
-        section1.addRow(CustomRow(text: "Custom Row 1").setRowHeight({ (_) -> CGFloat in
+        section1.addRow(CustomRow(id: "s1customRow1", text: "Custom Row 1").setRowHeight({ (_) -> CGFloat in
             return 40
         }))
         for i in 2...4 {
             // All these cells have their height defined by the section (ie : 80)
-            section1.addRow(CustomRow(text: "Custom Row " + NSNumber(value: i).stringValue))
+            section1.addRow(CustomRow(id: "s1customRow\(i)", text: "Custom Row " + NSNumber(value: i).stringValue))
         }
         
         
@@ -60,7 +60,7 @@ class ConfigurationTableViewController: UIViewController {
         source.addSection(section2)
         
         for i in 1...5 {
-            section2.addRow(CustomRow(text: "Custom Row " + NSNumber(value: i).stringValue))
+            section2.addRow(CustomRow(id: "s2customRow\(i)", text: "Custom Row " + NSNumber(value: i).stringValue))
         }
     }
 }

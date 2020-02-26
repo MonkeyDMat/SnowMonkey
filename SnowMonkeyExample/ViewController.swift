@@ -24,14 +24,13 @@ class ViewController: UIViewController {
         source.setRowSelectionStyle { (_) -> UITableViewCell.SelectionStyle in
             return .none
         }
-        source.verbose = true
         
         // Table
         let tableSection = TableSection(header: NativeHeader(title: "Table"), footer: nil)
         source.addSection(tableSection, id: "table")
         
         // Native
-        let native = NativeRow(text: "Native")
+        let native = NativeRow(id: "native", text: "Native")
         native.setDidSelect { (_) in
             self.show(sample: .native)
         }
@@ -39,7 +38,7 @@ class ViewController: UIViewController {
         
         
         // Custom
-        let custom = NativeRow(text: "Custom")
+        let custom = NativeRow(id: "custom", text: "Custom")
         custom.setDidSelect { (_) in
             self.show(sample: .custom)
         }
@@ -47,7 +46,7 @@ class ViewController: UIViewController {
         
         
         // CustomData
-        let customData = NativeRow(text: "Custom data")
+        let customData = NativeRow(id: "customData", text: "Custom data")
         customData.setDidSelect { (_) in
             self.show(sample: .customData)
         }
@@ -55,7 +54,7 @@ class ViewController: UIViewController {
         
         
         // Configuration
-        let configuration = NativeRow(text: "Configuration")
+        let configuration = NativeRow(id: "configuration", text: "Configuration")
         configuration.setDidSelect { (_) in
             self.show(sample: .configuration)
         }
@@ -63,7 +62,7 @@ class ViewController: UIViewController {
         
         
         // Editable
-        let editable = NativeRow(text: "Editable")
+        let editable = NativeRow(id: "editable", text: "Editable")
         editable.setDidSelect { (_) in
             self.show(sample: .editable)
         }
@@ -71,7 +70,7 @@ class ViewController: UIViewController {
         
         
         // Animated
-        let animated = NativeRow(text: "Animated")
+        let animated = NativeRow(id: "animated", text: "Animated")
         animated.setDidSelect { (_) in
             self.show(sample: .animated)
         }
@@ -79,7 +78,7 @@ class ViewController: UIViewController {
         
         
         // Animated
-        let grouped = NativeRow(text: "Grouped")
+        let grouped = NativeRow(id: "grouped", text: "Grouped")
         grouped.setDidSelect { (_) in
             self.show(sample: .grouped)
         }
@@ -88,18 +87,13 @@ class ViewController: UIViewController {
         tableSection.addRows([native, custom, customData, configuration])
         tableSection.addRow(editable)
         tableSection.addRows([animated, grouped])
-        tableSection.addRow(editable, id: "Test")
-        
-        let index = tableSection.getRowIndex(with: "Test")
-        
-        source.getRow(by: "Test")?.row
         
         // Collection
         let collectionSection = TableSection(header: NativeHeader(title: "Collection"), footer: nil)
         source.addSection(collectionSection, id: "collection")
         
         // Native
-        let nativeCollection = NativeRow(text: "Native Collection")
+        let nativeCollection = NativeRow(id: "nativeCollection", text: "Native Collection")
         nativeCollection.setDidSelect { (_) in
             self.show(sample: .nativeCollection)
         }
