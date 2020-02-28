@@ -21,4 +21,6 @@ import UIKit
 open class BaseHeader: UIView, HeaderLayout, HeaderDelegate {
     public var section: BaseTableSection?
     public weak var delegate: HeaderDelegate?
+    
+    // ToDo: Add a method setHeaderHeight
 }

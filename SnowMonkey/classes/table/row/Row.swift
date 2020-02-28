@@ -8,39 +8,35 @@
 
 import UIKit
 
-@objc public protocol RowType: RowLayout, RowEdition, RowSelection {
+@objc public protocol Indexable {
+    var index: IndexPath? { get }
+}
+
+@objc public protocol Identifiable {
+    var id: String { get set }
+}
+
+@objc public protocol RowType: RowLayout, RowEdition, RowSelection, Indexable, Identifiable {
     func resetCell()
     func updateCell(cell: UITableViewCell)
     func getCell(tableView: UITableView) -> UITableViewCell
     @objc optional func setSection(section: BaseTableSection)
 }
 
-public struct IndexedTableRow {
-    public var index: IndexPath?
-    public var identifiedRow: IdentifiedTableRow?
-    
-    public init(index: IndexPath?, identifiedRow: IdentifiedTableRow?) {
-        self.index = index
-        self.identifiedRow = identifiedRow
-    }
-    
-    public init(row: RowType, index: IndexPath? = nil, id: String? = nil) {
-        self = IndexedTableRow(index: index, identifiedRow: IdentifiedTableRow(id: id, row: row))
-    }
-}
-
-public struct IdentifiedTableRow {
-    public var id: String?
-    public var row: RowType
-    
-    public init(id: String?, row: RowType) {
-        self.id = id
-        self.row = row
-    }
-}
-
 open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutProvider, RowEditionProvider, RowSelectionProvider {
-
+    
+    // MARK: Indexable
+    public var index: IndexPath? {
+        guard let sectionIndex = section?.sectionIndex,
+            let rowIndex = section?.getRowIndex(of: self) else {
+                return nil
+        }
+        return IndexPath(row: rowIndex, section: sectionIndex)
+    }
+    
+    // MARK: Identifiable
+    public var id: String
+    
     public typealias ReturnType = Row<SourceType, CellType>
     
     var data: SourceType?
@@ -57,13 +53,15 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
         }
     }
     
-    public init(data: SourceType? = nil, cellIdentifier: String? = nil, cellPresenter: BaseCellPresenter<CellType, SourceType>? = nil) {
+    public init(id: String, data: SourceType? = nil, cellIdentifier: String? = nil, cellPresenter: BaseCellPresenter<CellType, SourceType>? = nil) {
+        self.id = id
         self.data = data
         self.cellIdentifier = cellIdentifier
         self.cellPresenter = cellPresenter
     }
     
-    public init(data: SourceType? = nil, cellIdentifier: String? = nil, configureCell: @escaping (CellType, SourceType) -> Void) {
+    public init(id: String, data: SourceType? = nil, cellIdentifier: String? = nil, configureCell: @escaping (CellType, SourceType) -> Void) {
+        self.id = id
         self.data = data
         self.cellIdentifier = cellIdentifier
         let closurePresenter = CellClosurePresenter<CellType, SourceType>(configureCell: configureCell)

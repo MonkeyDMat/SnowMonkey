@@ -28,12 +28,12 @@ class NativeTableViewController: UIViewController {
                                                           footer: NativeFooter(title: "Native Footer"))
         
         source.addSection(section)
-            .addRow(NativeRow(text: "Style subtitle", detail: "subtitle", style: .subtitle))
-            .addRow(NativeRow(text: "Style value 1", detail: "value 1", style: .value1))
-            .addRow(NativeRow(text: "Style value 2", detail: "value 2", style: .value2))
+            .addRow(NativeRow(id: "subtitle", text: "Style subtitle", detail: "subtitle", style: .subtitle))
+            .addRow(NativeRow(id: "value1", text: "Style value 1", detail: "value 1", style: .value1))
+            .addRow(NativeRow(id: "value2", text: "Style value 2", detail: "value 2", style: .value2))
             
         for i in 1...30 {
-            section.addRow(NativeRow(text: "Native Row " + NSNumber(value: i).stringValue))
+            section.addRow(NativeRow(id: "row\(i)", text: "Native Row " + NSNumber(value: i).stringValue))
         }
     }
 }

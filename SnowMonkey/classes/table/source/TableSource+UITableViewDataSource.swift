@@ -49,10 +49,10 @@ extension TableSource: UITableViewDataSource {
     
     //MARK: - Row
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let identifiedRow = getRow(indexPath: indexPath)
+        let row = getRow(indexPath: indexPath)
         
-        let cell = identifiedRow?.row.getCell(tableView: tableView)
-        cell?.selectionStyle = identifiedRow?.row.selectionStyle?() ?? .default
+        let cell = row?.getCell(tableView: tableView)
+        cell?.selectionStyle = row?.selectionStyle?() ?? .default
         
         if verbose {
             print("[EasyList] DataSource cellForRowAt \(indexPath) - \(cell)")
@@ -63,8 +63,8 @@ extension TableSource: UITableViewDataSource {
     
     //MARK: - Edit row
     public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        let identifiedRow = getRow(indexPath: indexPath)
-        return identifiedRow?.row.isEditable?() ?? false
+        let row = getRow(indexPath: indexPath)
+        return row?.isEditable?() ?? false
     }
     
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

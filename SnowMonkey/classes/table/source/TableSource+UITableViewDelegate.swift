@@ -52,13 +52,13 @@ extension TableSource: UITableViewDelegate {
     
     //MARK: - Cell layout
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let identifiedRow = getRow(indexPath: indexPath)
-        return identifiedRow?.row.rowHeight?() ?? UITableView.automaticDimension
+        let row = getRow(indexPath: indexPath)
+        return row?.rowHeight?() ?? UITableView.automaticDimension
     }
     
     public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        let identifiedRow = getRow(indexPath: indexPath)
-        return identifiedRow?.row.estimatedRowHeight?() ?? cellHeights[indexPath] ?? UITableView.automaticDimension
+        let row = getRow(indexPath: indexPath)
+        return row?.estimatedRowHeight?() ?? cellHeights[indexPath] ?? UITableView.automaticDimension
     }
     
     //MARK: - Header rendering delegate
@@ -91,7 +91,7 @@ extension TableSource: UITableViewDelegate {
     
     //MARK: - Row render delegate
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        self.getRow(indexPath: indexPath)?.row.updateCell(cell: cell)
+        self.getRow(indexPath: indexPath)?.updateCell(cell: cell)
         delegate?.willDisplayRow?(tableView, willDisplay: cell, forRowAt: indexPath)
         cellHeights[indexPath] = cell.frame.size.height
     }
@@ -99,7 +99,7 @@ extension TableSource: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         delegate?.didEndDisplayRow?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
         if tableView.indexPathsForVisibleRows?.contains(indexPath) == false {
-            self.getRow(indexPath: indexPath)?.row.resetCell()
+            self.getRow(indexPath: indexPath)?.resetCell()
         }
     }
     
@@ -125,34 +125,34 @@ extension TableSource: UITableViewDelegate {
     
     //MARK: - Selection
     public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        let identifiedRow = getRow(indexPath: indexPath)
-        return identifiedRow?.row.willSelect?(index: indexPath)
+        let row = getRow(indexPath: indexPath)
+        return row?.willSelect?(index: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
-        let identifiedRow = getRow(indexPath: indexPath)
-        return identifiedRow?.row.willDeselect?(index: indexPath)
+        let row = getRow(indexPath: indexPath)
+        return row?.willDeselect?(index: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let identifiedRow = getRow(indexPath: indexPath)
-        identifiedRow?.row.didSelect?(index: indexPath)
+        let row = getRow(indexPath: indexPath)
+        row?.didSelect?(index: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let identifiedRow = getRow(indexPath: indexPath)
-        identifiedRow?.row.didDeselect?(index: indexPath)
+        let row = getRow(indexPath: indexPath)
+        row?.didDeselect?(index: indexPath)
     }
     
     //MARK: - Edition
     public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        let identifiedRow = getRow(indexPath: indexPath)
-        return identifiedRow?.row.getEditingStyle?() ?? .none
+        let row = getRow(indexPath: indexPath)
+        return row?.getEditingStyle?() ?? .none
     }
     
     public func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        let identifiedRow = getRow(indexPath: indexPath)
-        return identifiedRow?.row.getTitleForDeleteConfirmation?()
+        let row = getRow(indexPath: indexPath)
+        return row?.getTitleForDeleteConfirmation?()
     }
     
     

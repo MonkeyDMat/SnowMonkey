@@ -23,13 +23,14 @@ class GroupedTableViewController: UIViewController {
         source.setRowSelectionStyle { (_) -> UITableViewCell.SelectionStyle in
             return .none
         }
+        source.verbose = true
         
         // Section 1
         let section1 = TableSection<NativeHeader, NativeFooter>(header: NativeHeader(title: "Native Header"),
                                                            footer: NativeFooter(title: "", height: CGFloat.leastNonzeroMagnitude))
         
         for i in 1...5 {
-            section1.addRow(NativeRow(text: "Section 1 - Row " + NSNumber(value: i).stringValue))
+            section1.addRow(NativeRow(id: "s1row\(i)", text: "Section 1 - Row " + NSNumber(value: i).stringValue))
         }
         
         source.addSection(section1)
@@ -40,7 +41,7 @@ class GroupedTableViewController: UIViewController {
                                                            footer: NativeFooter(title: "Native Footer"))
         
         for i in 1...5 {
-            section2.addRow(NativeRow(text: "Section 2 - Row " + NSNumber(value: i).stringValue))
+            section2.addRow(NativeRow(id: "s2row\(i)", text: "Section 2 - Row " + NSNumber(value: i).stringValue))
         }
         
         source.addSection(section2)

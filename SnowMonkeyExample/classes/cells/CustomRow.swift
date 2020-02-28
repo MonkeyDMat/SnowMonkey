@@ -10,8 +10,8 @@ import UIKit
 
 class CustomRow: NibRow<String, CustomCell> {
     
-    public init(text: String) {
-        super.init(data: text, cellIdentifier: "CustomRow", nibName: "CustomCell") { (cell, data) in
+    public init(id: String, text: String) {
+        super.init(id: id, data: text, cellIdentifier: "CustomRow", nibName: "CustomCell") { (cell, data) in
             cell.label?.text = text
         }
     }

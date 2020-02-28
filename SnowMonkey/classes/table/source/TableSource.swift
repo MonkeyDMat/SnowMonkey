@@ -13,12 +13,12 @@ enum SourceUpdateKind {
     case delete
 }
 
-public typealias AfterPredicate = ((IdentifiedTableRow, IdentifiedTableRow) -> Bool)
+public typealias AfterPredicate = ((RowType, RowType) -> Bool)
 
 struct SourceUpdate {
     var kind: SourceUpdateKind
     var section: BaseTableSection
-    var rows:[IndexedTableRow]?
+    var rows: () -> [RowType]
     var after: AfterPredicate?
     var animation: UITableView.RowAnimation?
 }
@@ -89,11 +89,11 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     }
     
     //MARK: - Row
-    public func getRow(indexPath: IndexPath) -> IdentifiedTableRow? {
+    public func getRow(indexPath: IndexPath) -> RowType? {
         return getSection(index: indexPath.section)?.section.getRow(at: indexPath.row)
     }
     
-    public func getRow(by id: String) -> IdentifiedTableRow? {
+    public func getRow(by id: String) -> RowType? {
         for identifiedSection in sections {
             if let row = identifiedSection.section.getRow(by: id) {
                 return row
@@ -103,8 +103,14 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
         return nil
     }
     
+    public func getAllRows() -> [RowType] {
+        return sections.flatMap { (id, section) -> [RowType] in
+            return section.rows
+        }
+    }
+    
     // MARK: - Queue
-    func getQueuedRow(_ id: String) -> IdentifiedTableRow? {
+    func getQueuedRow(_ id: String) -> RowType? {
         for identifiedSection in sections {
             if let row = getQueuedRow(id, in: identifiedSection.section) {
                 return row
@@ -113,30 +119,32 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
         return nil
     }
     
-    func getQueuedRow(_ id: String, in section: BaseTableSection) -> IdentifiedTableRow? {
+    func getQueuedRow(_ id: String, in section: BaseTableSection) -> RowType? {
         if let update = updateQueue.toArray().first(where: { (update) -> Bool in
-            return update.section === section && update.rows?.contains(where: { (row) -> Bool in
-                return row.identifiedRow?.id == id
+            return update.section === section && update.rows().contains(where: { (row) -> Bool in
+                return row.id == id
             }) == true
         }) {
-            return update.rows?.first(where: { (row) -> Bool in
-                return row.identifiedRow?.id == id
-            })?.identifiedRow
+            return update.rows().first(where: { (row) -> Bool in
+                return row.id == id
+            })
         }
         return nil
     }
     
     @discardableResult
-    func addRows(_ rows: [IndexedTableRow], after: AfterPredicate?, in section: BaseTableSection, animation: UITableView.RowAnimation? = nil) -> TableSource {
+    func addRows(_ rows: [RowType], after: AfterPredicate?, in section: BaseTableSection, animation: UITableView.RowAnimation? = nil) -> TableSource {
         
         updateQueue.enqueue(element: SourceUpdate(kind: .insert,
                                                   section: section,
-                                                  rows: rows,
+                                                  rows: {
+                                                    return rows
+                                                  },
                                                   after: after,
                                                   animation: animation))
         
         if verbose {
-            print("[EasyList] QUEUE : \(updateQueue)")
+            print("[EasyList] ENQUEUE INSERT : \(updateQueue.elements.last?.rows())")
         }
         
         performUpdates()
@@ -151,25 +159,17 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     }
     
     @discardableResult
-    func deleteRows(at indexes: [Int], in section: BaseTableSection, animation: UITableView.RowAnimation? = nil) -> TableSource {
-        
-        guard let sectionIndex = getIndex(of: section) else {
-            if verbose {
-                print("[EasyList] SECTION NOT FOUND : \(section)")
-            }
-            return self
-        }
-        
-        let rows = indexes.map { (index) -> IndexedTableRow in
-            return IndexedTableRow(index: IndexPath(row: index, section: sectionIndex),
-                                   identifiedRow: nil)
-        }
+    func deleteRows(rows: @escaping () -> [RowType], in section: BaseTableSection, animation: UITableView.RowAnimation? = nil) -> TableSource {
         
         updateQueue.enqueue(element: SourceUpdate(kind: .delete,
                                                   section: section,
                                                   rows: rows,
                                                   after: nil,
                                                   animation: animation))
+        
+        if verbose {
+            print("[EasyList] ENQUEUE DELETE : \(updateQueue.elements.last?.rows())")
+        }
         
         performUpdates()
         
@@ -224,13 +224,13 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
             if verbose {
                 print("[EasyList] UPDATE")
             }
-            isUpdating = true
             if let update = updateQueue.dequeue() {
+                isUpdating = true
                 if update.animation != nil {
                     if #available(iOS 11.0, *) {
                         tableView?.performBatchUpdates({
                             if verbose {
-                                print("[EasyList] PROCESSING : \(update)")
+                                print("[EasyList] PROCESSING ANIMATED IOS >=11 : \(update.kind) - \(update.rows())")
                             }
                             doUpdate(update)
                         }, completion: { (finished) in
@@ -249,45 +249,40 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
                         }
                         tableView?.beginUpdates()
                         if verbose {
-                            print("[EasyList] PROCESSING : \(update)")
+                            print("[EasyList] PROCESSING ANIMATED IOS <11 : \(update.kind) - \(update.rows())")
                         }
                         doUpdate(update)
                         tableView?.endUpdates()
                         CATransaction.commit()
                     }
                 } else {
-                    guard let rows = update.rows else {
-                        return
-                    }
-                    if verbose {
-                        print("[EasyList] PROCESSING : \(update)")
-                    }
-                    switch update.kind {
-                    case .insert:
-                        let indexPaths = getIndexPath(for: update)
-                        for (index, row) in rows.enumerated() {
-                            if let identifiedRow = row.identifiedRow {
-                                update.section.insert(row: identifiedRow, index: indexPaths[index].row)
+                    let rows = update.rows()
+                    if rows.count > 0 {
+                        if verbose {
+                            print("[EasyList] PROCESSING NOT ANIMATED : \(update.kind) - \(update.rows())")
+                        }
+                        switch update.kind {
+                        case .insert:
+                            let indexPaths = getIndexPath(for: update)
+                            for (index, row) in rows.enumerated() {
+                                update.section.insert(row: row, index: indexPaths[index].row)
+                            }
+                        case .delete:
+                            let indexes = rows.map { (row) -> Int? in
+                                return row.index?.row
+                                }.removeNils().sorted(by: >)
+                            for index in indexes {
+                                update.section.removeRow(index: index)
                             }
                         }
-                    case .delete:
-                        let indexes = rows.map { (row) -> Int? in
-                            return row.index?.row
-                            }.removeNils().sorted(by: >)
-                        for index in indexes {
-                            update.section.removeRow(index: index)
-                        }
+                        tableView?.reloadData()
                     }
-                    tableView?.reloadData()
-                    
-                    isUpdating = false
-                    if updateQueue.count() != 0 {
-                        performUpdates()
-                    }
+                    self.isUpdating = false
+                    self.performUpdates()
                 }
             }
         } else {
-            isUpdating = false
+            self.isUpdating = false
             if verbose {
                 print("[EasyList] ALREADY UPDATING")
             }
@@ -295,34 +290,39 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     }
     
     func doUpdate(_ update: SourceUpdate) {
-        guard let rows = update.rows else {
-            return
-        }
+        let rows = update.rows()
         let indexPaths = getIndexPath(for: update)
         switch update.kind {
         case .insert:
             for (index, row) in rows.enumerated() {
-                if let identifiedRow = row.identifiedRow {
-                    update.section.insert(row: identifiedRow, index: indexPaths[index].row)
-                }
+                update.section.insert(row: row, index: indexPaths[index].row)
+            }
+            if verbose {
+                print("[EasyList] INSERTING ROWS : \(update.rows()) at \(indexPaths)")
             }
             tableView?.insertRows(at: indexPaths, with: update.animation ?? .none)
         case .delete:
-            let indexes = rows.map { (row) -> Int? in
-                return row.index?.row
-                }.removeNils().sorted(by: >)
-            for index in indexes {
-                update.section.removeRow(index: index)
+            if rows.count > 0 {
+                let indexes = rows.map { (row) -> Int? in
+                    return row.index?.row
+                    }.removeNils().sorted(by: >)
+                for index in indexes {
+                    update.section.removeRow(index: index)
+                }
+                if verbose {
+                    print("[EasyList] DELETING ROWS : at \(indexPaths)")
+                }
+                tableView?.deleteRows(at: indexPaths, with: update.animation ?? .none)
             }
-            tableView?.deleteRows(at: indexPaths, with: update.animation ?? .none)
         }
     }
     
     func getIndexPath(for update: SourceUpdate) -> [IndexPath] {
-        guard let sectionIndex = getIndex(of: update.section), let rows = update.rows else {
+        guard let sectionIndex = getIndex(of: update.section) else {
             return []
         }
         
+        let rows = update.rows()
         var indexes = [IndexPath]()
         
         if let predicate = update.after {
@@ -330,14 +330,10 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
             
             for (index, row) in rows.enumerated() {
                 
-                if let row = row.identifiedRow {
-                    for (currentIndex, currentRow) in update.section.rows.enumerated() {
-                        if predicate(currentRow, row) {
-                            rowIndex = max(rowIndex, currentIndex + 1)
-                        }
+                for (currentIndex, currentRow) in update.section.rows.enumerated() {
+                    if predicate(currentRow, row) {
+                        rowIndex = max(rowIndex, currentIndex + 1)
                     }
-                } else {
-                    rowIndex = update.section.rows.count + indexes.count
                 }
                 
                 indexes.append(IndexPath(row: rowIndex + index, section: sectionIndex))
@@ -346,6 +342,9 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
             for row in rows {
                 let rowIndex = row.index?.row ?? (update.section.rows.count + indexes.count)
                 indexes.append(IndexPath(row: rowIndex, section: sectionIndex))
+            }
+            if verbose {
+                print("[EasyList] ROWS => INDEXES : \(rows) => \(indexes)")
             }
         }
         

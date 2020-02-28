@@ -34,7 +34,7 @@ class CustomTableViewController: UIViewController {
         source.addSection(section)
         
         for i in 1...30 {
-            section.addRow(CustomRow(text: "Custom Row " + NSNumber(value: i).stringValue))
+            section.addRow(CustomRow(id: "customRow\(i)", text: "Custom Row " + NSNumber(value: i).stringValue))
         }
     }
 }
