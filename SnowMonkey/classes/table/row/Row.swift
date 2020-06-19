@@ -44,7 +44,7 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
     var cellIdentifier: String?
     var cellPresenter: BaseCellPresenter<CellType, SourceType>?
     
-    private var section: BaseTableSection?
+    private weak var section: BaseTableSection?
     
     var verbose: Bool?
     private var _verbose: Bool {
