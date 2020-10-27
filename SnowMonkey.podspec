@@ -17,7 +17,7 @@ Pod::Spec.new do |spec|
 
   spec.name         = "SnowMonkey"
   spec.version      = "1.0.0"
-  spec.summary      = "SnowMonkey helps you handle tableView easily by handling the datasource and delegate for you"
+  spec.summary      = "SnowMonkey helps you manage tableView easily by handling the datasource and delegate for you"
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -25,7 +25,7 @@ Pod::Spec.new do |spec|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   spec.description  = <<-DESC
-  SnowMonkey helps you handle tableView easily by handling the datasource and delegate for you
+  SnowMonkey let you manage your tableView through a source, and handle the insertion, deletion, animation, for you
                    DESC
 
   spec.homepage     = "https://github.com/MonkeyDMat/SnowMonkey"
@@ -39,8 +39,8 @@ Pod::Spec.new do |spec|
   #  Popular ones are 'MIT', 'BSD' and 'Apache License, Version 2.0'.
   #
 
-  spec.license      = "MIT (example)"
-  # spec.license      = { :type => "MIT", :file => "FILE_LICENSE" }
+  # spec.license      = "MIT"
+  spec.license      = { :type => "MIT", :file => "LICENSE" }
 
 
   # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -64,8 +64,8 @@ Pod::Spec.new do |spec|
   #  the deployment target. You can optionally include the target after the platform.
   #
 
-  spec.platform     = :ios
-  # spec.platform     = :ios, "5.0"
+  # spec.platform     = :ios
+  spec.platform     = :ios, "9.0"
 
   #  When using multiple platforms
   # spec.ios.deployment_target = "5.0"
