@@ -20,6 +20,10 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     public weak var source: TableSource?
     var rows: [IdentifiedTableRow] = []
     
+    open var numberOfRows: Int {
+        return rows.count
+    }
+    
     var verbose: Bool?
     private var _verbose: Bool {
         get {
