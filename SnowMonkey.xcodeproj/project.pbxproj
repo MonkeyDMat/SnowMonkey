@@ -556,6 +556,7 @@
 		B10FC9B82260A7AC0093C544 /* table */ = {
 			isa = PBXGroup;
 			children = (
+				B193404A255A7D87009B291B /* hidden */,
 				15389590223E5B170034AB6A /* Native */,
 				153D9CDD223ECA3F00337B4E /* Custom */,
 				153D9CE5223ECC2800337B4E /* CustomData */,
@@ -600,6 +601,13 @@
 				B14CA1D5228D9D4200579E6A /* StoreCollectionCell.swift */,
 			);
 			path = cells;
+			sourceTree = "<group>";
+		};
+		B193404A255A7D87009B291B /* hidden */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = hidden;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

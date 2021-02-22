@@ -24,6 +24,10 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
         return source?.getIndex(of: self)
     }
     
+    open var numberOfRows: Int {
+        return rows.count
+    }
+    
     var verbose: Bool?
     private var _verbose: Bool {
         get {
