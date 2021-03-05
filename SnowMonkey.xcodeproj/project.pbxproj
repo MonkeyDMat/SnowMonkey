@@ -119,6 +119,20 @@
 		B11BCEF2224230CD004310BB /* GroupedTable.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B11BCEF1224230CD004310BB /* GroupedTable.storyboard */; };
 		B11BCEF4224230DC004310BB /* GroupedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11BCEF3224230DC004310BB /* GroupedTableViewController.swift */; };
 		B14CA1D7228D9D4200579E6A /* StoreCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14CA1D5228D9D4200579E6A /* StoreCollectionCell.swift */; };
+		B1F03F1B25F12A400053CB26 /* PickerSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F03F1A25F12A400053CB26 /* PickerSource.swift */; };
+		B1F03F1F25F12AA90053CB26 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F03F1E25F12AA90053CB26 /* PickerView.swift */; };
+		B1F03F2325F12B110053CB26 /* PickerSource+UIPickerViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F03F2225F12B110053CB26 /* PickerSource+UIPickerViewDataSource.swift */; };
+		B1F03F2725F12B490053CB26 /* PickerSource+UIPickerViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F03F2625F12B490053CB26 /* PickerSource+UIPickerViewDelegate.swift */; };
+		B1F03F3025F12D310053CB26 /* PickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F03F2F25F12D310053CB26 /* PickerRow.swift */; };
+		B1F03F3725F13B080053CB26 /* PickerView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1F03F3625F13B080053CB26 /* PickerView.storyboard */; };
+		B1F03F3B25F13B1F0053CB26 /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F03F3A25F13B1F0053CB26 /* PickerViewController.swift */; };
+		B1F03F4025F13C8D0053CB26 /* PickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F03F2F25F12D310053CB26 /* PickerRow.swift */; };
+		B1F03F4425F13C910053CB26 /* PickerSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F03F1A25F12A400053CB26 /* PickerSource.swift */; };
+		B1F03F4825F13C940053CB26 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F03F1E25F12AA90053CB26 /* PickerView.swift */; };
+		B1F03F4E25F13D790053CB26 /* TextFieldPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F03F4D25F13D790053CB26 /* TextFieldPickerCell.swift */; };
+		B1F03F5425F13DE30053CB26 /* TextFieldPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1F03F5325F13DE30053CB26 /* TextFieldPickerCell.xib */; };
+		B1F03F6325F1432B0053CB26 /* PickerSource+UIPickerViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F03F2625F12B490053CB26 /* PickerSource+UIPickerViewDelegate.swift */; };
+		B1F03F6625F1432E0053CB26 /* PickerSource+UIPickerViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F03F2225F12B110053CB26 /* PickerSource+UIPickerViewDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -201,6 +215,15 @@
 		B11BCEF1224230CD004310BB /* GroupedTable.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GroupedTable.storyboard; sourceTree = "<group>"; };
 		B11BCEF3224230DC004310BB /* GroupedTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedTableViewController.swift; sourceTree = "<group>"; };
 		B14CA1D5228D9D4200579E6A /* StoreCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCollectionCell.swift; sourceTree = "<group>"; };
+		B1F03F1A25F12A400053CB26 /* PickerSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerSource.swift; sourceTree = "<group>"; };
+		B1F03F1E25F12AA90053CB26 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
+		B1F03F2225F12B110053CB26 /* PickerSource+UIPickerViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PickerSource+UIPickerViewDataSource.swift"; sourceTree = "<group>"; };
+		B1F03F2625F12B490053CB26 /* PickerSource+UIPickerViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PickerSource+UIPickerViewDelegate.swift"; sourceTree = "<group>"; };
+		B1F03F2F25F12D310053CB26 /* PickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerRow.swift; sourceTree = "<group>"; };
+		B1F03F3625F13B080053CB26 /* PickerView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PickerView.storyboard; sourceTree = "<group>"; };
+		B1F03F3A25F13B1F0053CB26 /* PickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
+		B1F03F4D25F13D790053CB26 /* TextFieldPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldPickerCell.swift; sourceTree = "<group>"; };
+		B1F03F5325F13DE30053CB26 /* TextFieldPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldPickerCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,13 +257,14 @@
 		1511B27B234E84B600514D17 /* classes */ = {
 			isa = PBXGroup;
 			children = (
-				1511B27C234E84B600514D17 /* footer */,
-				1511B27F234E84B600514D17 /* collection */,
-				1511B290234E84B600514D17 /* core */,
 				1511B292234E84B600514D17 /* Config.swift */,
 				1511B293234E84B600514D17 /* extensions */,
-				1511B296234E84B600514D17 /* table */,
 				1511B2AD234E84B600514D17 /* header */,
+				1511B27C234E84B600514D17 /* footer */,
+				1511B290234E84B600514D17 /* core */,
+				1511B27F234E84B600514D17 /* collection */,
+				1511B296234E84B600514D17 /* table */,
+				B1F03F1725F12A000053CB26 /* picker */,
 			);
 			path = classes;
 			sourceTree = "<group>";
@@ -502,6 +526,8 @@
 				153C04F0224102DF004B5FC4 /* StoreCell.xib */,
 				153AC9592241983D00CA3E1E /* IndexedRow.swift */,
 				153AC95B224198B500CA3E1E /* IndexedCell.swift */,
+				B1F03F4D25F13D790053CB26 /* TextFieldPickerCell.swift */,
+				B1F03F5325F13DE30053CB26 /* TextFieldPickerCell.xib */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -518,6 +544,7 @@
 		154930AB22399C1E002693F1 /* examples */ = {
 			isa = PBXGroup;
 			children = (
+				B1F03F3525F13A9F0053CB26 /* picker */,
 				B10FC9B92260A7C30093C544 /* collection */,
 				B10FC9B82260A7AC0093C544 /* table */,
 			);
@@ -608,6 +635,43 @@
 			children = (
 			);
 			path = hidden;
+			sourceTree = "<group>";
+		};
+		B1F03F1725F12A000053CB26 /* picker */ = {
+			isa = PBXGroup;
+			children = (
+				B1F03F2E25F12D090053CB26 /* row */,
+				B1F03F1925F12A2C0053CB26 /* source */,
+				B1F03F1E25F12AA90053CB26 /* PickerView.swift */,
+			);
+			path = picker;
+			sourceTree = "<group>";
+		};
+		B1F03F1925F12A2C0053CB26 /* source */ = {
+			isa = PBXGroup;
+			children = (
+				B1F03F1A25F12A400053CB26 /* PickerSource.swift */,
+				B1F03F2225F12B110053CB26 /* PickerSource+UIPickerViewDataSource.swift */,
+				B1F03F2625F12B490053CB26 /* PickerSource+UIPickerViewDelegate.swift */,
+			);
+			path = source;
+			sourceTree = "<group>";
+		};
+		B1F03F2E25F12D090053CB26 /* row */ = {
+			isa = PBXGroup;
+			children = (
+				B1F03F2F25F12D310053CB26 /* PickerRow.swift */,
+			);
+			path = row;
+			sourceTree = "<group>";
+		};
+		B1F03F3525F13A9F0053CB26 /* picker */ = {
+			isa = PBXGroup;
+			children = (
+				B1F03F3625F13B080053CB26 /* PickerView.storyboard */,
+				B1F03F3A25F13B1F0053CB26 /* PickerViewController.swift */,
+			);
+			path = picker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -712,11 +776,13 @@
 				B10FC9BC2260A8440093C544 /* NativeCollection.storyboard in Resources */,
 				153D9CEC223ECC6600337B4E /* EditableTable.storyboard in Resources */,
 				153C04F1224102DF004B5FC4 /* StoreCell.xib in Resources */,
+				B1F03F5425F13DE30053CB26 /* TextFieldPickerCell.xib in Resources */,
 				154930BB22399C1E002693F1 /* CustomHeader.xib in Resources */,
 				153C050A22414A2E004B5FC4 /* CustomHeaderWithAction.xib in Resources */,
 				153D9CF8223ED29100337B4E /* CustomCell.xib in Resources */,
 				1549309A22399BF8002693F1 /* LaunchScreen.storyboard in Resources */,
 				153D9CEE223ECC7000337B4E /* AnimatedTable.storyboard in Resources */,
+				B1F03F3725F13B080053CB26 /* PickerView.storyboard in Resources */,
 				153D9CDF223ECA5200337B4E /* CustomTable.storyboard in Resources */,
 				154930B222399C1E002693F1 /* CustomFooter.xib in Resources */,
 				15389598223E65290034AB6A /* NativeTable.storyboard in Resources */,
@@ -741,7 +807,9 @@
 				1511B2C9234E84B600514D17 /* CollectionItem.swift in Sources */,
 				1511B2F1234E84B600514D17 /* RowLayout.swift in Sources */,
 				1511B2D7234E84B600514D17 /* BaseTableSection.swift in Sources */,
+				B1F03F3B25F13B1F0053CB26 /* PickerViewController.swift in Sources */,
 				1511B2E3234E84B600514D17 /* NativeCell.swift in Sources */,
+				B1F03F4E25F13D790053CB26 /* TextFieldPickerCell.swift in Sources */,
 				1511B2EF234E84B600514D17 /* RowSelection.swift in Sources */,
 				1511B2E1234E84B600514D17 /* TableCell.swift in Sources */,
 				B14CA1D7228D9D4200579E6A /* StoreCollectionCell.swift in Sources */,
@@ -765,12 +833,14 @@
 				1511B2DF234E84B600514D17 /* CellPresenter.swift in Sources */,
 				153AC95A2241983D00CA3E1E /* IndexedRow.swift in Sources */,
 				154930B922399C1E002693F1 /* NativeTableViewController.swift in Sources */,
+				B1F03F4425F13C910053CB26 /* PickerSource.swift in Sources */,
 				1549309C22399BF8002693F1 /* AppDelegate.swift in Sources */,
 				154930B322399C1E002693F1 /* CustomCell.swift in Sources */,
 				1511B2CD234E84B600514D17 /* Queue.swift in Sources */,
 				1511B2DB234E84B600514D17 /* TableSource+UITableViewDataSource.swift in Sources */,
 				1511B2F9234E84B600514D17 /* NativeHeader.swift in Sources */,
 				153D9CF0223ECC8A00337B4E /* CustomDataTableViewController.swift in Sources */,
+				B1F03F4825F13C940053CB26 /* PickerView.swift in Sources */,
 				153D9CF4223ECCA300337B4E /* EditableTableViewController.swift in Sources */,
 				1511B2BF234E84B600514D17 /* CollectionSource+UICollectionViewDelegate.swift in Sources */,
 				1511B2CF234E84B600514D17 /* Config.swift in Sources */,
@@ -778,13 +848,16 @@
 				1511B2C1234E84B600514D17 /* CollectionSource+UICollectionViewDataSource.swift in Sources */,
 				B11BCEF4224230DC004310BB /* GroupedTableViewController.swift in Sources */,
 				1511B2F5234E84B600514D17 /* TableView.swift in Sources */,
+				B1F03F6625F1432E0053CB26 /* PickerSource+UIPickerViewDataSource.swift in Sources */,
 				154930B122399C1E002693F1 /* CustomFooter.swift in Sources */,
 				1511B2B9234E84B600514D17 /* BaseCollectionSection.swift in Sources */,
+				B1F03F6325F1432B0053CB26 /* PickerSource+UIPickerViewDelegate.swift in Sources */,
 				1511B2D9234E84B600514D17 /* TableSource+UITableViewDelegate.swift in Sources */,
 				153D9CF6223ECCAD00337B4E /* AnimatedTableViewController.swift in Sources */,
 				1511B2B7234E84B600514D17 /* CollectionSection.swift in Sources */,
 				1549309822399BF8002693F1 /* ViewController.swift in Sources */,
 				153C04EF224102D4004B5FC4 /* StoreCell.swift in Sources */,
+				B1F03F4025F13C8D0053CB26 /* PickerRow.swift in Sources */,
 				1511B2C3234E84B600514D17 /* CollectionCell.swift in Sources */,
 				1511B2C7234E84B600514D17 /* CollectionItemPresenter.swift in Sources */,
 				1511B2D5234E84B600514D17 /* TableSection.swift in Sources */,
@@ -822,23 +895,28 @@
 				1511B2D8234E84B600514D17 /* TableSource+UITableViewDelegate.swift in Sources */,
 				1511B2E4234E84B600514D17 /* CellClosurePresenter.swift in Sources */,
 				1511B2BC234E84B600514D17 /* CollectionSource.swift in Sources */,
+				B1F03F2325F12B110053CB26 /* PickerSource+UIPickerViewDataSource.swift in Sources */,
+				B1F03F3025F12D310053CB26 /* PickerRow.swift in Sources */,
 				1511B2E0234E84B600514D17 /* TableCell.swift in Sources */,
 				1511B2CC234E84B600514D17 /* Queue.swift in Sources */,
 				1511B2B8234E84B600514D17 /* BaseCollectionSection.swift in Sources */,
 				1511B2E2234E84B600514D17 /* NativeCell.swift in Sources */,
 				153C050622414A1D004B5FC4 /* CustomHeaderWithAction.swift in Sources */,
 				1511B2D2234E84B600514D17 /* CollectionExtensions.swift in Sources */,
+				B1F03F2725F12B490053CB26 /* PickerSource+UIPickerViewDelegate.swift in Sources */,
 				1511B2D0234E84B600514D17 /* IndexPathExtensions.swift in Sources */,
 				1511B2F8234E84B600514D17 /* NativeHeader.swift in Sources */,
 				1511B2F2234E84B600514D17 /* RowEdition.swift in Sources */,
 				1511B2F6234E84B600514D17 /* Header.swift in Sources */,
 				1511B2CE234E84B600514D17 /* Config.swift in Sources */,
+				B1F03F1F25F12AA90053CB26 /* PickerView.swift in Sources */,
 				1511B2B6234E84B600514D17 /* CollectionSection.swift in Sources */,
 				1511B2D4234E84B600514D17 /* TableSection.swift in Sources */,
 				1511B2F4234E84B600514D17 /* TableView.swift in Sources */,
 				1511B2EC234E84B600514D17 /* NibRow.swift in Sources */,
 				1511B2EA234E84B600514D17 /* Row.swift in Sources */,
 				1511B2C2234E84B600514D17 /* CollectionCell.swift in Sources */,
+				B1F03F1B25F12A400053CB26 /* PickerSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
