@@ -34,7 +34,6 @@ class ViewController: UIViewController {
         native.setDidSelect { (_) in
             self.show(sample: .native)
         }
-        //tableSection.addRow(native)
         
         
         // Custom
@@ -42,7 +41,6 @@ class ViewController: UIViewController {
         custom.setDidSelect { (_) in
             self.show(sample: .custom)
         }
-        //tableSection.addRow(custom)
         
         
         // CustomData
@@ -50,7 +48,6 @@ class ViewController: UIViewController {
         customData.setDidSelect { (_) in
             self.show(sample: .customData)
         }
-        //tableSection.addRow(customData)
         
         
         // Configuration
@@ -58,7 +55,6 @@ class ViewController: UIViewController {
         configuration.setDidSelect { (_) in
             self.show(sample: .configuration)
         }
-        //tableSection.addRow(configuration)
         
         
         // Editable
@@ -66,7 +62,6 @@ class ViewController: UIViewController {
         editable.setDidSelect { (_) in
             self.show(sample: .editable)
         }
-        //tableSection.addRow(editable)
         
         
         // Animated
@@ -74,7 +69,6 @@ class ViewController: UIViewController {
         animated.setDidSelect { (_) in
             self.show(sample: .animated)
         }
-        //tableSection.addRow(animated)
         
         
         // Animated
@@ -82,7 +76,6 @@ class ViewController: UIViewController {
         grouped.setDidSelect { (_) in
             self.show(sample: .grouped)
         }
-        //tableSection.addRow(grouped)
         
         tableSection.addRows([native, custom, customData, configuration])
         tableSection.addRow(editable)
@@ -98,6 +91,17 @@ class ViewController: UIViewController {
             self.show(sample: .nativeCollection)
         }
         collectionSection.addRow(nativeCollection)
+        
+        // Picker
+        let pickerSection = TableSection(header: NativeHeader(title: "Picker"), footer: nil)
+        source.addSection(pickerSection, id: "picker")
+        
+        // Native
+        let pickerRow = NativeRow(text: "Picker")
+        pickerRow.setDidSelect { (_) in
+            self.show(sample: .picker)
+        }
+        pickerSection.addRow(pickerRow)
     }
     
     private func show(sample: Sample) {
@@ -124,9 +128,14 @@ class ViewController: UIViewController {
         case .grouped:
             let storyBoard = UIStoryboard(name: "GroupedTable", bundle: nil)
             vc = storyBoard.instantiateViewController(withIdentifier: "GroupedTableViewController")
+            
         case .nativeCollection:
             let storyBoard = UIStoryboard(name: "NativeCollection", bundle: nil)
             vc = storyBoard.instantiateViewController(withIdentifier: "NativeCollectionViewController")
+            
+        case .picker:
+            let storyBoard = UIStoryboard(name: "PickerView", bundle: nil)
+            vc = storyBoard.instantiateViewController(withIdentifier: "PickerViewController")
         }
         
         guard let viewController = vc else {
@@ -151,4 +160,6 @@ private enum Sample: String {
     case grouped = "Grouped"
     
     case nativeCollection = "NativeCollection"
+    
+    case picker = "Picker"
 }
