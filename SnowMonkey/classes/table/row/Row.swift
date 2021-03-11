@@ -40,7 +40,7 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
     public typealias ReturnType = Row<SourceType, CellType>
     
     var data: SourceType?
-    open var cell: CellType?
+    public var cell: CellType?
     var cellIdentifier: String?
     var cellPresenter: BaseCellPresenter<CellType, SourceType>?
     

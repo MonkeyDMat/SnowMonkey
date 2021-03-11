@@ -118,6 +118,8 @@
 		B10FC9BE2260AC0A0093C544 /* NativeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10FC9BD2260AC0A0093C544 /* NativeCollectionViewController.swift */; };
 		B11BCEF2224230CD004310BB /* GroupedTable.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B11BCEF1224230CD004310BB /* GroupedTable.storyboard */; };
 		B11BCEF4224230DC004310BB /* GroupedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11BCEF3224230DC004310BB /* GroupedTableViewController.swift */; };
+		B1361A5F25FA1756009BF10A /* InsertionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1361A5E25FA1756009BF10A /* InsertionTableViewController.swift */; };
+		B1361A6325FA1775009BF10A /* InsertionTable.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1361A6225FA1775009BF10A /* InsertionTable.storyboard */; };
 		B14CA1D7228D9D4200579E6A /* StoreCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14CA1D5228D9D4200579E6A /* StoreCollectionCell.swift */; };
 		B1F03F1B25F12A400053CB26 /* PickerSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F03F1A25F12A400053CB26 /* PickerSource.swift */; };
 		B1F03F1F25F12AA90053CB26 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F03F1E25F12AA90053CB26 /* PickerView.swift */; };
@@ -214,6 +216,8 @@
 		B10FC9BD2260AC0A0093C544 /* NativeCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeCollectionViewController.swift; sourceTree = "<group>"; };
 		B11BCEF1224230CD004310BB /* GroupedTable.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GroupedTable.storyboard; sourceTree = "<group>"; };
 		B11BCEF3224230DC004310BB /* GroupedTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedTableViewController.swift; sourceTree = "<group>"; };
+		B1361A5E25FA1756009BF10A /* InsertionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertionTableViewController.swift; sourceTree = "<group>"; };
+		B1361A6225FA1775009BF10A /* InsertionTable.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = InsertionTable.storyboard; sourceTree = "<group>"; };
 		B14CA1D5228D9D4200579E6A /* StoreCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCollectionCell.swift; sourceTree = "<group>"; };
 		B1F03F1A25F12A400053CB26 /* PickerSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerSource.swift; sourceTree = "<group>"; };
 		B1F03F1E25F12AA90053CB26 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
@@ -583,6 +587,7 @@
 		B10FC9B82260A7AC0093C544 /* table */ = {
 			isa = PBXGroup;
 			children = (
+				B1361A5D25FA1736009BF10A /* Insertion */,
 				B193404A255A7D87009B291B /* hidden */,
 				15389590223E5B170034AB6A /* Native */,
 				153D9CDD223ECA3F00337B4E /* Custom */,
@@ -620,6 +625,15 @@
 				B11BCEF3224230DC004310BB /* GroupedTableViewController.swift */,
 			);
 			path = Grouped;
+			sourceTree = "<group>";
+		};
+		B1361A5D25FA1736009BF10A /* Insertion */ = {
+			isa = PBXGroup;
+			children = (
+				B1361A5E25FA1756009BF10A /* InsertionTableViewController.swift */,
+				B1361A6225FA1775009BF10A /* InsertionTable.storyboard */,
+			);
+			path = Insertion;
 			sourceTree = "<group>";
 		};
 		B14CA1D4228D9D1700579E6A /* cells */ = {
@@ -779,6 +793,7 @@
 				B1F03F5425F13DE30053CB26 /* TextFieldPickerCell.xib in Resources */,
 				154930BB22399C1E002693F1 /* CustomHeader.xib in Resources */,
 				153C050A22414A2E004B5FC4 /* CustomHeaderWithAction.xib in Resources */,
+				B1361A6325FA1775009BF10A /* InsertionTable.storyboard in Resources */,
 				153D9CF8223ED29100337B4E /* CustomCell.xib in Resources */,
 				1549309A22399BF8002693F1 /* LaunchScreen.storyboard in Resources */,
 				153D9CEE223ECC7000337B4E /* AnimatedTable.storyboard in Resources */,
@@ -804,6 +819,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1361A5F25FA1756009BF10A /* InsertionTableViewController.swift in Sources */,
 				1511B2C9234E84B600514D17 /* CollectionItem.swift in Sources */,
 				1511B2F1234E84B600514D17 /* RowLayout.swift in Sources */,
 				1511B2D7234E84B600514D17 /* BaseTableSection.swift in Sources */,
