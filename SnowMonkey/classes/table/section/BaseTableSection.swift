@@ -24,7 +24,7 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
         return source?.getIndex(of: self)
     }
     
-    open var numberOfRows: Int {
+    public var numberOfRows: Int {
         return rows.count
     }
     
@@ -53,20 +53,39 @@ open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, Ro
     
     @discardableResult
     public func addRow(_ row: RowType,
-                       after predicate: @escaping AfterPredicate,
+                       after predicate: @escaping RowComparisonPredicate,
                        animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
         return self.addRows([row], after: predicate, animation: animation)
     }
     
     @discardableResult
     public func addRows(_ rows: [RowType],
-                       after predicate: @escaping AfterPredicate,
+                       after predicate: @escaping RowComparisonPredicate,
                        animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
         rows.forEach { (row) in
             row.setSection?(section: self)
         }
         
         source?.addRows(rows, after: predicate, in: self, animation: animation)
+        return self
+    }
+    
+    @discardableResult
+    public func addRow(_ row: RowType,
+                       before predicate: @escaping RowComparisonPredicate,
+                       animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
+        return self.addRows([row], before: predicate, animation: animation)
+    }
+    
+    @discardableResult
+    public func addRows(_ rows: [RowType],
+                       before predicate: @escaping RowComparisonPredicate,
+                       animation: UITableView.RowAnimation = .automatic) -> BaseTableSection {
+        rows.forEach { (row) in
+            row.setSection?(section: self)
+        }
+        
+        source?.addRows(rows, before: predicate, in: self, animation: animation)
         return self
     }
     

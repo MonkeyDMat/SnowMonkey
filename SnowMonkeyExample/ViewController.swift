@@ -71,15 +71,22 @@ class ViewController: UIViewController {
         }
         
         
-        // Animated
+        // Grouped
         let grouped = NativeRow(id: "grouped", text: "Grouped")
         grouped.setDidSelect { (_) in
             self.show(sample: .grouped)
         }
         
+        
+        // Insertion
+        let insertion = NativeRow(id: "insertion", text: "Insertion")
+        insertion.setDidSelect { (_) in
+            self.show(sample: .insertion)
+        }
+        
         tableSection.addRows([native, custom, customData, configuration])
         tableSection.addRow(editable)
-        tableSection.addRows([animated, grouped])
+        tableSection.addRows([animated, grouped, insertion])
         
         // Collection
         let collectionSection = TableSection(header: NativeHeader(title: "Collection"), footer: nil)
@@ -128,7 +135,9 @@ class ViewController: UIViewController {
         case .grouped:
             let storyBoard = UIStoryboard(name: "GroupedTable", bundle: nil)
             vc = storyBoard.instantiateViewController(withIdentifier: "GroupedTableViewController")
-            
+        case .insertion:
+            let storyBoard = UIStoryboard(name: "InsertionTable", bundle: nil)
+            vc = storyBoard.instantiateViewController(withIdentifier: "InsertionTableViewController")
         case .nativeCollection:
             let storyBoard = UIStoryboard(name: "NativeCollection", bundle: nil)
             vc = storyBoard.instantiateViewController(withIdentifier: "NativeCollectionViewController")
@@ -158,6 +167,7 @@ private enum Sample: String {
     case editable = "Editable"
     case animated = "Animated"
     case grouped = "Grouped"
+    case insertion = "Insertion"
     
     case nativeCollection = "NativeCollection"
     

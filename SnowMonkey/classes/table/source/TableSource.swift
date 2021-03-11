@@ -13,13 +13,14 @@ enum SourceUpdateKind {
     case delete
 }
 
-public typealias AfterPredicate = ((RowType, RowType) -> Bool)
+public typealias RowComparisonPredicate = ((RowType, RowType) -> Bool)
 
 struct SourceUpdate {
     var kind: SourceUpdateKind
     var section: BaseTableSection
     var rows: () -> [RowType]
-    var after: AfterPredicate?
+    var before: RowComparisonPredicate?
+    var after: RowComparisonPredicate?
     var animation: UITableView.RowAnimation?
 }
 
@@ -53,6 +54,10 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     }
     
     //MARK: - Section
+    public var numberOfSections: Int {
+        return sections.count
+    }
+    
     @discardableResult
     public func addSection(_ section: BaseTableSection, id: String? = nil) -> BaseTableSection {
         section.source = self
@@ -69,6 +74,14 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     
     public func getSection(index: Int) -> IdentifiedTableSection? {
         return sections[safe: index]
+    }
+    
+    public func getLastSection() -> IdentifiedTableSection? {
+        return sections.last
+    }
+    
+    public func getSections() -> [IdentifiedTableSection] {
+        return sections
     }
     
     func getIndex(of section: BaseTableSection) -> Int? {
@@ -89,6 +102,10 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     }
     
     //MARK: - Row
+    public var numberOfRows: Int {
+        return getAllRows().count
+    }
+    
     public func getRow(indexPath: IndexPath) -> RowType? {
         return getSection(index: indexPath.section)?.section.getRow(at: indexPath.row)
     }
@@ -133,7 +150,7 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
     }
     
     @discardableResult
-    func addRows(_ rows: [RowType], after: AfterPredicate?, in section: BaseTableSection, animation: UITableView.RowAnimation? = nil) -> TableSource {
+    func addRows(_ rows: [RowType], after: RowComparisonPredicate?, in section: BaseTableSection, animation: UITableView.RowAnimation? = nil) -> TableSource {
         
         updateQueue.enqueue(element: SourceUpdate(kind: .insert,
                                                   section: section,
@@ -141,6 +158,26 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
                                                     return rows
                                                   },
                                                   after: after,
+                                                  animation: animation))
+        
+        if verbose {
+            print("[EasyList] ENQUEUE INSERT : \(updateQueue.elements.last?.rows())")
+        }
+        
+        performUpdates()
+        
+        return self
+    }
+    
+    @discardableResult
+    func addRows(_ rows: [RowType], before: RowComparisonPredicate?, in section: BaseTableSection, animation: UITableView.RowAnimation? = nil) -> TableSource {
+        
+        updateQueue.enqueue(element: SourceUpdate(kind: .insert,
+                                                  section: section,
+                                                  rows: {
+                                                    return rows
+                                                  },
+                                                  before: before,
                                                   animation: animation))
         
         if verbose {
@@ -325,7 +362,21 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
         let rows = update.rows()
         var indexes = [IndexPath]()
         
-        if let predicate = update.after {
+        if let predicate = update.before {
+            var rowIndex = 0
+            
+            for (index, row) in rows.enumerated() {
+                
+                for (currentIndex, currentRow) in update.section.rows.enumerated() {
+                    if predicate(currentRow, row) {
+                        rowIndex = currentIndex
+                        break
+                    }
+                }
+                
+                indexes.append(IndexPath(row: rowIndex + index, section: sectionIndex))
+            }
+        } else if let predicate = update.after {
             var rowIndex = 0
             
             for (index, row) in rows.enumerated() {
