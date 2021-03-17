@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 
 open class TableView: UITableView {
+    public var id: String?
+    
     public var source: TableSource? {
         didSet {
             delegate = source

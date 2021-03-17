@@ -9,6 +9,8 @@
 import UIKit
 
 open class PickerView: UIPickerView {
+    public var id: String?
+    
     public var source: PickerSource? {
         didSet {
             delegate = source

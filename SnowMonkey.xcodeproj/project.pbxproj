@@ -219,6 +219,7 @@
 		B1361A5E25FA1756009BF10A /* InsertionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertionTableViewController.swift; sourceTree = "<group>"; };
 		B1361A6225FA1775009BF10A /* InsertionTable.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = InsertionTable.storyboard; sourceTree = "<group>"; };
 		B14CA1D5228D9D4200579E6A /* StoreCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCollectionCell.swift; sourceTree = "<group>"; };
+		B1888B972602077A007D1801 /* SnowMonkey.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = SnowMonkey.podspec; sourceTree = "<group>"; };
 		B1F03F1A25F12A400053CB26 /* PickerSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerSource.swift; sourceTree = "<group>"; };
 		B1F03F1E25F12AA90053CB26 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		B1F03F2225F12B110053CB26 /* PickerSource+UIPickerViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PickerSource+UIPickerViewDataSource.swift"; sourceTree = "<group>"; };
@@ -569,6 +570,7 @@
 		15574EB420F259FB00BC1089 = {
 			isa = PBXGroup;
 			children = (
+				B1888B972602077A007D1801 /* SnowMonkey.podspec */,
 				1511B27A234E84B600514D17 /* SnowMonkey */,
 				1549308F22399BF8002693F1 /* SnowMonkeyExample */,
 				15574EBF20F259FB00BC1089 /* Products */,
