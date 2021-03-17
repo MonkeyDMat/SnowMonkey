@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 
 open class CollectionView: UICollectionView {
+    var id: String?
+    
     public var source: CollectionSource? {
         didSet {
             delegate = source
