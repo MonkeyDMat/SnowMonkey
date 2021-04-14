@@ -8,5 +8,5 @@
 
 import UIKit
 
-class StoreRow: NibRow<Store, StoreCell> {
+class StoreRow: Row<Store, StoreCell> {
 }

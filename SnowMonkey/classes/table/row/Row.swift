@@ -16,6 +16,10 @@ import UIKit
     var id: String { get set }
 }
 
+public protocol CellProvider {
+    func getCell<CellType: UITableViewCell>(cell: CellType?, cellIdentifier: String?, tableView: UITableView) -> CellType?
+}
+
 @objc public protocol RowType: RowLayout, RowEdition, RowSelection, Indexable, Identifiable {
     func resetCell()
     func updateCell(cell: UITableViewCell)
@@ -24,6 +28,8 @@ import UIKit
 }
 
 open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutProvider, RowEditionProvider, RowSelectionProvider {
+    
+    public var cellProvider: CellProvider
     
     // MARK: Indexable
     public var index: IndexPath? {
@@ -53,19 +59,21 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
         }
     }
     
-    public init(id: String, data: SourceType? = nil, cellIdentifier: String? = nil, cellPresenter: BaseCellPresenter<CellType, SourceType>? = nil) {
+    public init(id: String, data: SourceType? = nil, cellIdentifier: String? = nil, cellPresenter: BaseCellPresenter<CellType, SourceType>? = nil, cellProvider: CellProvider = DefaultCellProvider()) {
         self.id = id
         self.data = data
         self.cellIdentifier = cellIdentifier
         self.cellPresenter = cellPresenter
+        self.cellProvider = cellProvider
     }
     
-    public init(id: String, data: SourceType? = nil, cellIdentifier: String? = nil, configureCell: @escaping (CellType, SourceType) -> Void) {
+    public init(id: String, data: SourceType? = nil, cellIdentifier: String? = nil, cellProvider: CellProvider = DefaultCellProvider(), configureCell: @escaping (CellType, SourceType) -> Void) {
         self.id = id
         self.data = data
         self.cellIdentifier = cellIdentifier
         let closurePresenter = CellClosurePresenter<CellType, SourceType>(configureCell: configureCell)
         self.cellPresenter = closurePresenter
+        self.cellProvider = cellProvider
     }
     
     open func updateRow(data: SourceType) {
@@ -89,16 +97,7 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
     }
     
     public func getCell(tableView: UITableView) -> UITableViewCell {
-        if cell == nil {
-            if let cellIdentifier = cellIdentifier {
-                tableView.register(CellType.self, forCellReuseIdentifier: cellIdentifier)
-                cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CellType
-            } else {
-                cell = CellType(frame: CGRect.zero)
-            }
-            
-        }
-        cell?.layoutSubviews()
+        cell = cellProvider.getCell(cell: cell, cellIdentifier: cellIdentifier, tableView: tableView)
         
         if let data = data, let cell = cell {
             cellPresenter?.configureCell(cell: cell, source: data)
@@ -245,5 +244,50 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
         _didDeselect?(index) ??
             section?._didDeselect?(index) ??
             section?.source?._didDeselect?(index)
+    }
+}
+
+public class DefaultCellProvider: CellProvider {
+    public init() {}
+    
+    public func getCell<CellType: UITableViewCell>(cell: CellType?, cellIdentifier: String?, tableView: UITableView) -> CellType? {
+        var returnCell = cell
+        if returnCell == nil {
+            if let cellIdentifier = cellIdentifier {
+                tableView.register(CellType.self, forCellReuseIdentifier: cellIdentifier)
+                returnCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CellType
+            } else {
+                returnCell = CellType(frame: CGRect.zero)
+            }
+            
+        }
+        returnCell?.layoutSubviews()
+        
+        return returnCell
+    }
+}
+
+public class NibCellProvider: CellProvider {
+    
+    var nibName: String
+    
+    public init(nibName: String) {
+        self.nibName = nibName
+    }
+    
+    public func getCell<CellType>(cell: CellType?, cellIdentifier: String?, tableView: UITableView) -> CellType? where CellType : UITableViewCell {
+        
+        var returnCell = cell
+        
+        let cellNib = UINib(nibName: nibName, bundle: nil)
+        
+        if let cellIdentifier = cellIdentifier {
+            tableView.register(cellNib, forCellReuseIdentifier: cellIdentifier)
+            returnCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CellType
+        } else {
+            returnCell = cellNib.instantiate(withOwner: nil, options: nil).first as? CellType
+        }
+        
+        return returnCell
     }
 }

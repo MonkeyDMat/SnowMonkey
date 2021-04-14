@@ -8,19 +8,22 @@
 
 import UIKit
 
-class TextFieldPickerRow: NibRow<String, TextFieldPickerCell> {
+class TextFieldPickerRow: Row<String, TextFieldPickerCell> {
     
     public init(text: String) {
-        super.init(data: text, cellIdentifier: "TextFieldPickerRow", nibName: "TextFieldPickerCell") { (cell, data) in
+        super.init(id: "",
+                   data: text,
+                   cellIdentifier: "TextFieldPickerRow",
+                   cellProvider: NibCellProvider(nibName: "TextFieldPickerCell")) { (cell, data) in
             cell.textfield?.text = text
             
             let pickerView = PickerView()
             let pickerSource = PickerSource(picker: pickerView, delegate: nil)
-            pickerSource.setup(rows: [PickerRow(text: "Valeur 1"),
-                                      PickerRow(attributedText: NSAttributedString(string: "Valeur 2", attributes: [NSAttributedString.Key.foregroundColor : UIColor.red])),
-                                      PickerRow(text: "Valeur 3"),
-                                      PickerRow(text: "Valeur 4"),
-                                      PickerRow(text: "Valeur 5")])
+            pickerSource.setup(rows: [PickerRow(id: "val1", text: "Valeur 1"),
+                                      PickerRow(id: "val1", attributedText: NSAttributedString(string: "Valeur 2", attributes: [NSAttributedString.Key.foregroundColor : UIColor.red])),
+                                      PickerRow(id: "val1", text: "Valeur 3"),
+                                      PickerRow(id: "val1", text: "Valeur 4"),
+                                      PickerRow(id: "val1", text: "Valeur 5")])
             cell.textfield?.inputView = pickerView
         }
     }
