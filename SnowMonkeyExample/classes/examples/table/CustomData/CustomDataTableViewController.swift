@@ -41,12 +41,12 @@ class CustomDataTableViewController: UIViewController {
         section.setRowHeight { (_) -> CGFloat in
             return 120
         }
-        
-        section.addRow(StoreRow(id: "storeCell1", data: store, cellIdentifier: nil, nibName: "StoreCell", cellPresenter: StoreNameCellPresenter()).setRowHeight({ (_) -> CGFloat in
+        let nibCellProvider = NibCellProvider(nibName: "StoreCell")
+        section.addRow(StoreRow(id: "storeCell1", data: store, cellIdentifier: nil, cellPresenter: StoreNameCellPresenter(), cellProvider: nibCellProvider).setRowHeight({ (_) -> CGFloat in
             return 80
         }))
-        section.addRow(StoreRow(id: "storeCell2", data: store, cellIdentifier: nil, nibName: "StoreCell", cellPresenter: StoreOpenedCellPresenter()))
-        section.addRow(StoreRow(id: "storeCell3", data: store, cellIdentifier: nil, nibName: "StoreCell", configureCell: { (cell, store) in
+        section.addRow(StoreRow(id: "storeCell2", data: store, cellIdentifier: nil, cellPresenter: StoreOpenedCellPresenter(), cellProvider: nibCellProvider))
+        section.addRow(StoreRow(id: "storeCell3", data: store, cellIdentifier: nil, cellProvider: nibCellProvider, configureCell: { (cell, store) in
             cell.label?.text = store.isOpened ? "Open" : "Closed"
         }))
     }
