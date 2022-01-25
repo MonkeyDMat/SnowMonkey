@@ -104,7 +104,7 @@ class ViewController: UIViewController {
         source.addSection(pickerSection, id: "picker")
         
         // Native
-        let pickerRow = NativeRow(text: "Picker")
+        let pickerRow = NativeRow(id: "picker", text: "Picker")
         pickerRow.setDidSelect { (_) in
             self.show(sample: .picker)
         }

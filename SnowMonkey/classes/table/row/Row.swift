@@ -16,14 +16,20 @@ import UIKit
     var id: String { get set }
 }
 
+public protocol CellProvider {
+    func getCell<CellType: UITableViewCell>(cellIdentifier: String?, tableView: UITableView) -> CellType?
+}
+
 @objc public protocol RowType: RowLayout, RowEdition, RowSelection, Indexable, Identifiable {
     func resetCell()
-    func updateCell(cell: UITableViewCell)
+    func updateCell(cell: UITableViewCell, tableView: UITableView)
     func getCell(tableView: UITableView) -> UITableViewCell
     @objc optional func setSection(section: BaseTableSection)
 }
 
 open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutProvider, RowEditionProvider, RowSelectionProvider {
+    
+    public var cellProvider: CellProvider
     
     // MARK: Indexable
     public var index: IndexPath? {
@@ -40,7 +46,13 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
     public typealias ReturnType = Row<SourceType, CellType>
     
     var data: SourceType?
-    public var cell: CellType?
+    public var cell: CellType? {
+        if let index = index {
+            return section?.source?.tableView?.cellForRow(at: index) as? CellType
+        }
+        
+        return nil
+    }
     var cellIdentifier: String?
     var cellPresenter: BaseCellPresenter<CellType, SourceType>?
     
@@ -53,19 +65,21 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
         }
     }
     
-    public init(id: String, data: SourceType? = nil, cellIdentifier: String? = nil, cellPresenter: BaseCellPresenter<CellType, SourceType>? = nil) {
+    public init(id: String, data: SourceType? = nil, cellIdentifier: String? = nil, cellPresenter: BaseCellPresenter<CellType, SourceType>? = nil, cellProvider: CellProvider = DefaultCellProvider()) {
         self.id = id
         self.data = data
         self.cellIdentifier = cellIdentifier
         self.cellPresenter = cellPresenter
+        self.cellProvider = cellProvider
     }
     
-    public init(id: String, data: SourceType? = nil, cellIdentifier: String? = nil, configureCell: @escaping (CellType, SourceType) -> Void) {
+    public init(id: String, data: SourceType? = nil, cellIdentifier: String? = nil, cellProvider: CellProvider = DefaultCellProvider(), configureCell: @escaping (CellType, SourceType) -> Void) {
         self.id = id
         self.data = data
         self.cellIdentifier = cellIdentifier
         let closurePresenter = CellClosurePresenter<CellType, SourceType>(configureCell: configureCell)
         self.cellPresenter = closurePresenter
+        self.cellProvider = cellProvider
     }
     
     open func updateRow(data: SourceType) {
@@ -78,29 +92,17 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
     }
     
     //MARK: - RowType
-    public func resetCell() {
-        cell = nil
-    }
-    
-    public func updateCell(cell: UITableViewCell) {
-        if let cell = cell as? CellType, let data = self.data {
+    public func updateCell(cell: UITableViewCell, tableView: UITableView) {
+        if let cell = (cell ?? getCell(tableView: tableView)) as? CellType,
+           let data = self.data {
             cellPresenter?.configureCell(cell: cell, source: data)
         }
     }
     
     public func getCell(tableView: UITableView) -> UITableViewCell {
-        if cell == nil {
-            if let cellIdentifier = cellIdentifier {
-                tableView.register(CellType.self, forCellReuseIdentifier: cellIdentifier)
-                cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CellType
-            } else {
-                cell = CellType(frame: CGRect.zero)
-            }
-            
-        }
-        cell?.layoutSubviews()
+        let cell = cellProvider.getCell(cellIdentifier: cellIdentifier, tableView: tableView)
         
-        if let data = data, let cell = cell {
+        if let data = data, let cell = cell as? CellType {
             cellPresenter?.configureCell(cell: cell, source: data)
         }
         return cell ?? UITableViewCell()
@@ -245,5 +247,50 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
         _didDeselect?(index) ??
             section?._didDeselect?(index) ??
             section?.source?._didDeselect?(index)
+    }
+}
+
+public class DefaultCellProvider: CellProvider {
+    public init() {}
+    
+    public func getCell<CellType: UITableViewCell>(cellIdentifier: String?, tableView: UITableView) -> CellType? {
+        var returnCell: CellType?
+        if returnCell == nil {
+            if let cellIdentifier = cellIdentifier {
+                tableView.register(CellType.self, forCellReuseIdentifier: cellIdentifier)
+                returnCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CellType
+            } else {
+                returnCell = CellType(frame: CGRect.zero)
+            }
+            
+        }
+        returnCell?.layoutSubviews()
+        
+        return returnCell
+    }
+}
+
+public class NibCellProvider: CellProvider {
+    
+    var nibName: String
+    
+    public init(nibName: String) {
+        self.nibName = nibName
+    }
+    
+    public func getCell<CellType>(cellIdentifier: String?, tableView: UITableView) -> CellType? where CellType : UITableViewCell {
+        
+        var returnCell: CellType?
+        
+        let cellNib = UINib(nibName: nibName, bundle: nil)
+        
+        if let cellIdentifier = cellIdentifier {
+            tableView.register(cellNib, forCellReuseIdentifier: cellIdentifier)
+            returnCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CellType
+        } else {
+            returnCell = cellNib.instantiate(withOwner: nil, options: nil).first as? CellType
+        }
+        
+        return returnCell
     }
 }
