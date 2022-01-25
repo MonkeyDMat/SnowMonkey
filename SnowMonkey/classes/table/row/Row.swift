@@ -21,7 +21,6 @@ public protocol CellProvider {
 }
 
 @objc public protocol RowType: RowLayout, RowEdition, RowSelection, Indexable, Identifiable {
-    func resetCell()
     func updateCell(cell: UITableViewCell, tableView: UITableView)
     func getCell(tableView: UITableView) -> UITableViewCell
     @objc optional func setSection(section: BaseTableSection)
