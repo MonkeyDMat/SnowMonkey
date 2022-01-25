@@ -17,12 +17,12 @@ import UIKit
 }
 
 public protocol CellProvider {
-    func getCell<CellType: UITableViewCell>(cell: CellType?, cellIdentifier: String?, tableView: UITableView) -> CellType?
+    func getCell<CellType: UITableViewCell>(cellIdentifier: String?, tableView: UITableView) -> CellType?
 }
 
 @objc public protocol RowType: RowLayout, RowEdition, RowSelection, Indexable, Identifiable {
     func resetCell()
-    func updateCell(cell: UITableViewCell)
+    func updateCell(cell: UITableViewCell, tableView: UITableView)
     func getCell(tableView: UITableView) -> UITableViewCell
     @objc optional func setSection(section: BaseTableSection)
 }
@@ -46,7 +46,13 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
     public typealias ReturnType = Row<SourceType, CellType>
     
     var data: SourceType?
-    public var cell: CellType?
+    public var cell: CellType? {
+        if let index = index {
+            return section?.source?.tableView?.cellForRow(at: index) as? CellType
+        }
+        
+        return nil
+    }
     var cellIdentifier: String?
     var cellPresenter: BaseCellPresenter<CellType, SourceType>?
     
@@ -86,20 +92,17 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
     }
     
     //MARK: - RowType
-    public func resetCell() {
-        cell = nil
-    }
-    
-    public func updateCell(cell: UITableViewCell) {
-        if let cell = cell as? CellType, let data = self.data {
+    public func updateCell(cell: UITableViewCell, tableView: UITableView) {
+        if let cell = (cell ?? getCell(tableView: tableView)) as? CellType,
+           let data = self.data {
             cellPresenter?.configureCell(cell: cell, source: data)
         }
     }
     
     public func getCell(tableView: UITableView) -> UITableViewCell {
-        cell = cellProvider.getCell(cell: cell, cellIdentifier: cellIdentifier, tableView: tableView)
+        let cell = cellProvider.getCell(cellIdentifier: cellIdentifier, tableView: tableView)
         
-        if let data = data, let cell = cell {
+        if let data = data, let cell = cell as? CellType {
             cellPresenter?.configureCell(cell: cell, source: data)
         }
         return cell ?? UITableViewCell()
@@ -250,8 +253,8 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
 public class DefaultCellProvider: CellProvider {
     public init() {}
     
-    public func getCell<CellType: UITableViewCell>(cell: CellType?, cellIdentifier: String?, tableView: UITableView) -> CellType? {
-        var returnCell = cell
+    public func getCell<CellType: UITableViewCell>(cellIdentifier: String?, tableView: UITableView) -> CellType? {
+        var returnCell: CellType?
         if returnCell == nil {
             if let cellIdentifier = cellIdentifier {
                 tableView.register(CellType.self, forCellReuseIdentifier: cellIdentifier)
@@ -275,9 +278,9 @@ public class NibCellProvider: CellProvider {
         self.nibName = nibName
     }
     
-    public func getCell<CellType>(cell: CellType?, cellIdentifier: String?, tableView: UITableView) -> CellType? where CellType : UITableViewCell {
+    public func getCell<CellType>(cellIdentifier: String?, tableView: UITableView) -> CellType? where CellType : UITableViewCell {
         
-        var returnCell = cell
+        var returnCell: CellType?
         
         let cellNib = UINib(nibName: nibName, bundle: nil)
         
