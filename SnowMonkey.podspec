@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "SnowMonkey"
-  spec.version      = "1.1.4"
+  spec.version      = "1.1.5"
   spec.summary      = "SnowMonkey helps you manage tableView easily by handling the datasource and delegate for you"
 
   # This description is used to generate tags and improve search results.
