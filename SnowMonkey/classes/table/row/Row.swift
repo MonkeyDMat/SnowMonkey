@@ -90,6 +90,10 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
         })
     }
     
+    open func setData(data: SourceType) {
+        self.data = data
+    }
+    
     //MARK: - RowType
     public func updateCell(cell: UITableViewCell, tableView: UITableView) {
         if let cell = (cell ?? getCell(tableView: tableView)) as? CellType,
