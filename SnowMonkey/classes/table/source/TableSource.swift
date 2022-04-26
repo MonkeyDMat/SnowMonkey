@@ -414,6 +414,9 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
                 
                 indexes.append(IndexPath(row: rowIndex + index, section: sectionIndex))
             }
+            if verbose {
+                print("[EasyList] ROWS => INDEXES : \(rows) => \(indexes)")
+            }
         } else if let predicate = update.after {
             var rowIndex = 0
             
@@ -426,6 +429,9 @@ open class TableSource: NSObject, RowLayout, RowLayoutProvider, RowEdition, RowE
                 }
                 
                 indexes.append(IndexPath(row: rowIndex + index, section: sectionIndex))
+            }
+            if verbose {
+                print("[EasyList] ROWS => INDEXES : \(rows) => \(indexes)")
             }
         } else {
             for row in rows {
