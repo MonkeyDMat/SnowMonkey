@@ -34,14 +34,17 @@ open class PickerSource: NSObject {
     }
     
     public func setup(rows: [PickerRow], selectedRowIds: [String] = []) {
-        self.components = [PickerComponent(layout: PickerComponentLayout.default, rows: rows)]
-        for (component, selectedRowId) in selectedRowIds.enumerated() {
-            if let rowIndex = rows.firstIndex(where: { (row) -> Bool in
-                return row.id == selectedRowId
-            }) {
-                self.picker?.selectRow(rowIndex, inComponent: component, animated: false)
+        Task { @MainActor [weak self] in
+            guard let self = self else { return }
+            self.components = [PickerComponent(layout: PickerComponentLayout.default, rows: rows)]
+            for (component, selectedRowId) in selectedRowIds.enumerated() {
+                if let rowIndex = rows.firstIndex(where: { (row) -> Bool in
+                    return row.id == selectedRowId
+                }) {
+                    self.picker?.selectRow(rowIndex, inComponent: component, animated: false)
+                }
             }
+            self.picker?.reloadAllComponents()
         }
-        self.picker?.reloadAllComponents()
     }
 }

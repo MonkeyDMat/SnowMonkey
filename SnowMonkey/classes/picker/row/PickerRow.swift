@@ -29,7 +29,7 @@ public class PickerRow: NSObject {
     }
 }
 
-
+@MainActor
 public struct PickerComponentLayout {
     var width: CGFloat
     var height: CGFloat
