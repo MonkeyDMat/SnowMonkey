@@ -13,12 +13,12 @@ import UIKit
     @objc optional func headerEstimatedHeight() -> CGFloat
 }
 
-@objc public protocol HeaderDelegate: class {
+@objc public protocol HeaderDelegate: Sendable {
     @objc optional func willDisplayHeaderView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
     @objc optional func didEndDisplayHeaderView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int)
 }
 
-open class BaseHeader: UIView, HeaderLayout, HeaderDelegate {
+open class BaseHeader: UIView, HeaderLayout, HeaderDelegate, Sendable {
     public var section: BaseTableSection?
     public weak var delegate: HeaderDelegate?
     

@@ -12,7 +12,7 @@ public typealias IdentifiedTableSection = (id: String?, section: BaseTableSectio
 
 // Section implements RowLayout, RowEdition, RowSelection so it can provides default values for the rows it contains
 // Which allows for example to define the height of all rows in that section, without having to specify height for each rows individually
-
+@MainActor
 open class BaseTableSection: NSObject, RowLayoutProvider, RowEditionProvider, RowSelectionProvider {
     
     public typealias ReturnType = BaseTableSection

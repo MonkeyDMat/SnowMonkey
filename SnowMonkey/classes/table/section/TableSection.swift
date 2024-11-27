@@ -13,7 +13,7 @@ open class TableSection<HeaderType: BaseHeader, FooterType: BaseFooter>: BaseTab
     
     var header: HeaderType?
     var footer: FooterType?
-    
+    @MainActor
     public init(header: HeaderType? = nil, footer: FooterType? = nil) {
         super.init()
         

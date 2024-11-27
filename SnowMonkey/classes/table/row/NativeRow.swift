@@ -30,12 +30,12 @@ public class NativeRow: Row<TextData, NativeCell> {
     }
     
     //MARK: - RowType
+    
     public override func getCell(tableView: UITableView) -> UITableViewCell {
         if let data = data {
             let cell = NativeCell(style: data.style, reuseIdentifier: cellIdentifier)
             
             cellPresenter?.configureCell(cell: cell, source: data)
-            
             return cell
         } else {
             return UITableViewCell()

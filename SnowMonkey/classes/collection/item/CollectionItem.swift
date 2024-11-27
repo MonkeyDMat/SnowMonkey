@@ -7,12 +7,12 @@
 //
 
 import UIKit
-
+@MainActor
 @objc public protocol CollectionItemType: CollectionItemLayout {
     func getCell(collectionView: UICollectionView) -> UICollectionViewCell
     @objc optional func setSection(section: BaseCollectionSection)
 }
-
+@MainActor
 open class CollectionItem<SourceType, CellType: CollectionCell<SourceType>>: CollectionItemType, CollectionItemLayoutProvider {
     
     typealias ReturnType = CollectionItem<SourceType, CellType>

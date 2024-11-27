@@ -8,6 +8,7 @@
 
 import Foundation
 
+@MainActor
 public protocol CellPresenter {
     associatedtype Cell
     associatedtype Source
@@ -16,6 +17,7 @@ public protocol CellPresenter {
 }
 
 // ToDo => BaseCellPresenter<BaseSource, BaseCell>
+@MainActor
 open class BaseCellPresenter<BaseCell, BaseSource>: CellPresenter {
     public typealias Cell = BaseCell
     public typealias Source = BaseSource

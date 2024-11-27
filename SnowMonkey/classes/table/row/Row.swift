@@ -8,24 +8,28 @@
 
 import UIKit
 
+@MainActor
 @objc public protocol Indexable {
     var index: IndexPath? { get }
 }
-
+@MainActor
 @objc public protocol Identifiable {
     var id: String { get set }
 }
 
+@MainActor
 public protocol CellProvider {
     func getCell<CellType: UITableViewCell>(cellIdentifier: String?, tableView: UITableView) -> CellType?
 }
 
+@MainActor
 @objc public protocol RowType: RowLayout, RowEdition, RowSelection, Indexable, Identifiable {
     func updateCell(cell: UITableViewCell, tableView: UITableView)
     func getCell(tableView: UITableView) -> UITableViewCell
     @objc optional func setSection(section: BaseTableSection)
 }
 
+@MainActor
 open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutProvider, RowEditionProvider, RowSelectionProvider {
     
     public var cellProvider: CellProvider
@@ -85,7 +89,7 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
         section?.updateRow({ [weak self] in
             self?.data = data
             if let cell = self?.cell {
-                cellPresenter?.configureCell(cell: cell, source: data)
+                self?.cellPresenter?.configureCell(cell: cell, source: data)
             }
         })
     }
@@ -96,7 +100,7 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
     
     //MARK: - RowType
     public func updateCell(cell: UITableViewCell, tableView: UITableView) {
-        if let cell = (cell ?? getCell(tableView: tableView)) as? CellType,
+        if let cell = (cell) as? CellType,
            let data = self.data {
             cellPresenter?.configureCell(cell: cell, source: data)
         }
@@ -139,6 +143,7 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
     }
     
     //MARK: - RowLayout
+    
     public func rowHeight() -> CGFloat {
         return _height?(self) ??
             section?._height?(self) ??
@@ -253,6 +258,7 @@ open class Row<SourceType, CellType: TableCell<SourceType>>: RowType, RowLayoutP
     }
 }
 
+@MainActor
 public class DefaultCellProvider: CellProvider {
     public init() {}
     

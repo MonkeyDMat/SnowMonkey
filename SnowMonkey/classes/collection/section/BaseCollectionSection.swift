@@ -8,7 +8,8 @@
 
 import UIKit
 
-open class BaseCollectionSection: NSObject, CollectionItemLayoutProvider {
+@MainActor
+open class BaseCollectionSection: NSObject, CollectionItemLayoutProvider, Sendable {
     
     typealias ReturnType = CollectionSource
     

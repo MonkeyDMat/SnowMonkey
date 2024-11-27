@@ -8,6 +8,7 @@
 
 import UIKit
 
+@MainActor
 open class CollectionSource: NSObject, CollectionItemLayout, CollectionItemLayoutProvider {
     
     typealias ReturnType = CollectionSource
