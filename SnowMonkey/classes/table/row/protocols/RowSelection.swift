@@ -8,6 +8,7 @@
 
 import UIKit
 
+@MainActor
 @objc public protocol RowSelection {
     @objc optional func willSelect(index: IndexPath) -> IndexPath?
     @objc optional func didSelect(index: IndexPath)
@@ -15,7 +16,8 @@ import UIKit
     @objc optional func didDeselect(index: IndexPath)
 }
 
-protocol RowSelectionProvider: class {
+@MainActor
+protocol RowSelectionProvider {
     associatedtype ReturnType
     
     var _willSelect: ((_ index: IndexPath) -> IndexPath?)? { get set }

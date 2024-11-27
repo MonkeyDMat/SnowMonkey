@@ -8,13 +8,14 @@
 
 import UIKit
 
+@MainActor
 @objc public protocol RowLayout {
     @objc optional func rowHeight() -> CGFloat
     @objc optional func estimatedRowHeight() -> CGFloat
     @objc optional func selectionStyle() -> UITableViewCell.SelectionStyle
 }
-
-protocol RowLayoutProvider: class {
+@MainActor
+protocol RowLayoutProvider {
     associatedtype ReturnType
     
     var _height: ((RowType) -> CGFloat)? { get set }

@@ -8,13 +8,14 @@
 
 import UIKit
 
+@MainActor
 @objc public protocol RowEdition {
     @objc optional func isEditable() -> Bool
     @objc optional func getEditingStyle() -> UITableViewCell.EditingStyle
     @objc optional func getTitleForDeleteConfirmation() -> String?
 }
-
-protocol RowEditionProvider: class {
+@MainActor
+protocol RowEditionProvider {
     associatedtype ReturnType
     
     var _editable: ((RowType) -> Bool)? { get set }

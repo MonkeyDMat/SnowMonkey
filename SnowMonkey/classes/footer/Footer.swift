@@ -13,7 +13,7 @@ import UIKit
     @objc optional func footerEstimatedHeight() -> CGFloat
 }
 
-@objc public protocol FooterDelegate: class {
+@objc public protocol FooterDelegate {
     @objc optional func willDisplayFooterView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int)
     @objc optional func didEndDisplayFooterView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int)
 }

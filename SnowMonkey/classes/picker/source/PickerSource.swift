@@ -11,7 +11,7 @@ import UIKit
 @objc public protocol PickerSourceDelegate {
     func didSelectRow(picker: PickerView, rowId: String, value: String, inComponent component: Int)
 }
-
+@MainActor
 open class PickerSource: NSObject {
     
     var components: [PickerComponent] = []
