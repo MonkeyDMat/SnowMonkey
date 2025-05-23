@@ -15,7 +15,7 @@ let package = Package(
     targets: [
         .target(
             name: "SnowMonkey",
-            path: "SnowMonkey/classes"
+            path: "SnowMonkey"
         )
     ]
 )
