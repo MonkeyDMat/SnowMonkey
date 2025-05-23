@@ -15,17 +15,7 @@ let package = Package(
     targets: [
         .target(
             name: "SnowMonkey",
-            path: "SnowMonkey/classes",
-            sources: [
-                "extensions",
-                "header",
-                "footer",
-                "core",
-                "collection",
-                "table",
-                "picker",
-                "Config.swift"
-            ]
+            path: "SnowMonkey/classes"
         )
     ]
 )
